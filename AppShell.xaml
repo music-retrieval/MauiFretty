@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Fretty.Views"
+    x:Class="Fretty.AppShell">
+
+    <FlyoutItem Title="Fretboard" Route="fretboard">
+        <ShellContent ContentTemplate="{DataTemplate pages:FretBoard}"/>
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Chord Streamer" Route="chordstreamer">
+        <ShellContent ContentTemplate="{DataTemplate pages:ChordStreamer}"/>
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Example" Route="example">
+        <ShellContent ContentTemplate="{DataTemplate pages:MainPage}"/>
+    </FlyoutItem>
+    
+</Shell>

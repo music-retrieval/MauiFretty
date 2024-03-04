@@ -1,0 +1,38 @@
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Visual Studio files
+.vs/
+/bin/
+/obj/
+
+# Ignore NuGet package directory
+packages/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Ignore build and debug files
+*.apk
+*.aab
+*.app
+*.appx
+*.appxbundle
+*.pdb
+*.dll
+*.exe
+
+# Ignore iOS build folder
+ios/build/
+
+# Ignore Android build folder
+android/bin/
+android/obj/
+
+# Ignore MAUI intermediate and output directories
+bin/
+obj/
+
