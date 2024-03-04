@@ -36,7 +36,7 @@ jobs:
     
       - name: Restore nuget packages
         run: |
-          dotnet restore WeatherTwentyOne.sln
+          dotnet restore Fretty.sln
         
         # https://docs.microsoft.com/en-us/dotnet/maui/macos/deployment/overview
       - name : Build MacCatalyst App
