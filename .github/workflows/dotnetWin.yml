@@ -34,39 +34,13 @@ jobs:
         run: |
           dotnet restore Fretty.sln
       
-      # https://docs.microsoft.com/en-us/dotnet/maui/windows/deployment/overview
       - name: Build Windows MSIX
         run: |
           dotnet publish -f net8.0-windows10.0.19041.0 -c Release 
 
-      # # https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/certutil
-      # # commandline util to encode to base64 on windows
-      # - name: Create signing pfx file from secrets
-      #   shell: pwsh
-      #   id: secret-file
-      #   env:
-      #     SECRET_DATA1: ${{ secrets.WIN_SIGN_CERT }}
-      #   run: |
-      #     $secretFile = "WinSignCert.pfx";
-      #     $encodedBytes = [System.Convert]::FromBase64String($env:SECRET_DATA1);
-      #     Set-Content $secretFile -Value $encodedBytes -AsByteStream;
-      #     Write-Output "::set-output name=SECRET_FILE::$secretFile";
-      #     Write-Output " ";
-      #     Write-Output "CHECK FILE EXISTS";
-      #     Write-Output " ";
-      #     ls
-
-      # # https://docs.microsoft.com/en-us/windows/msix/desktop/azure-dev-ops
-      # - name: Sign Windows App
-      #   shell: pwsh
-      #   env:
-      #     CERT_PASSWORD: ${{ secrets.WIN_CERT_PASSWORD }}
-      #   run: |
-      #     '"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\SignTool" sign /a /fd SHA256 /f WinSignCert.pfx /p ($env:CERT_PASSWORD) 6.0\Apps\WeatherTwentyOne\src\WeatherTwentyOne\bin\Release\net7.0-windows10.0.19041.0\win10-x64\AppPackages\WeatherTwentyOne_1.0.0.0_TestWeatherTwentyOne_1.0.0.0_x64.msix'
-
       - uses: actions/upload-artifact@v2
         with:
-          name: artifacts-windows
+          name: FrettyWindows
           path: |
             **\*.msix
       
@@ -96,34 +70,13 @@ jobs:
           run: |
             dotnet restore Fretty.sln
 
-          # https://docs.microsoft.com/en-us/dotnet/maui/android/deployment/overview
         - name : Build Android App
           shell: bash
           run: |
             dotnet publish -f:net8.0-android -c:Release
-            
-        # # Store Android Signing Keystore and password in Secrets using base64 encoding
-        # # https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/certutil
-        # # commandline util to encode to base64 on windows
-        # - name: Extract Android signing key from env
-        #   shell: bash
-        #   run: |
-        #     echo "${{ secrets.RELEASE_KEYSTORE }}" > android/release.jks.base64
-        #     base64 -d android/release.jks.base64 > android/release.decrypted.jks
-
-        # # check android SDK paths etc in installed VM : https://github.com/actions/virtual-environments#available-environments
-        # - name: Sign dev build
-        #   shell: bash
-        #   run: jarsigner -keystore android/release.decrypted.jks -storepass "${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" -signedjar ./android/app/build/outputs/bundle/release/app-release-signed.aab ./android/app/build/outputs/bundle/release/app-release.aab release
-
-  #       - name: Build and Run UnitTests
-  #         shell: bash
-  #         run: |
-  #           dotnet build <path to unit test csproj>
-  #           dotnet test <path to unit test csproj> --no-build --verbosity normal
 
         - uses: actions/upload-artifact@v2
           with:
-            name: artifacts-android
+            name: FrettyAndroid
             path: |
-              bin\Release\net7.0-android\publish\*.apk
+              bin\Release\net8.0-android\publish\*.apk
