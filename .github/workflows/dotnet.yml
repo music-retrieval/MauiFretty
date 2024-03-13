@@ -23,7 +23,10 @@ jobs:
 
       - name: Self Sign MacCatalyst App
         run: |
-          echo "$CERTIFICATE_PEM" | security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db
+          openssl genrsa -out private.key 2048
+          echo "$CERTIFICATE_PEM" > cert.pem
+          openssl pkcs12 -export -out certificate.p12 -inkey private.key -in cert.pem
+          security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db certificate.p12
 
       - name: Setup .NET SDK ${{env.DOTNETVERSION}}
         uses: actions/setup-dotnet@v1
