@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - dev/*
-      
+
   pull_request:
     branches: [ main ]
 
@@ -20,6 +20,12 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
+
+      - name: Self Sign MacCatalyst App
+        run: |
+          echo "$CERTIFICATE_PEM" > cert.pem
+          security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db cert.pem
+          codesign --force --deep --sign "fretty.software" ./artifacts/**/*.pkg
 
       - name: Setup .NET SDK ${{env.DOTNETVERSION}}
         uses: actions/setup-dotnet@v1
