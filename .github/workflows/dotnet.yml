@@ -2,7 +2,10 @@ name: Fretty for Mac & IOS
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - dev/*
+      
   pull_request:
     branches: [ main ]
 
