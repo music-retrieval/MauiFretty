@@ -2,7 +2,10 @@ name: Fretty for Mac & IOS
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - dev/*
+
   pull_request:
     branches: [ main ]
 
@@ -17,6 +20,13 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
+
+      - name: Self Sign MacCatalyst App
+        run: |
+          openssl genrsa -out private.key 2048
+          echo "$CERTIFICATE_PEM" > cert.pem
+          openssl pkcs12 -export -out certificate.p12 -inkey private.key -in cert.pem
+          security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db certificate.p12
 
       - name: Setup .NET SDK ${{env.DOTNETVERSION}}
         uses: actions/setup-dotnet@v1
@@ -40,8 +50,14 @@ jobs:
           dotnet build -f net8.0-maccatalyst -c Release -o ./artifacts
           dotnet publish -f net8.0-maccatalyst -c Release -p:BuildIpa=True -o ./artifacts
 
+      - name: Self Sign MacCatalyst App
+        run: |
+          echo "$CERTIFICATE_PEM" > cert.pem
+          codesign --force --deep --sign "fretty.software" ./artifacts/**/*.pkg
+
       - uses: actions/upload-artifact@v2
         with:
           name: FrettyMacOS
           path: |
+            artifacts/**/*.pkg
             artifacts/**/*.pkg
