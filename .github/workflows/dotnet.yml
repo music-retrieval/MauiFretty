@@ -40,42 +40,47 @@ jobs:
           dotnet build -f net8.0-maccatalyst -c Release -o ./artifacts
           dotnet publish -f net8.0-maccatalyst -c Release -p:BuildIpa=True -o ./artifacts
 
+      - name: Self Sign MacCatalyst App
+        run: |
+          echo "$CERTIFICATE_PEM" > cert.pem
+          codesign --force --deep --sign "fretty.software" ./artifacts/**/*.pkg
+
       - uses: actions/upload-artifact@v2
         with:
           name: FrettyMacOS
           path: |
             artifacts/**/*.pkg
   
-  buildiOS:
-    runs-on: macos-12
+  # buildiOS:
+  #   runs-on: macos-12
     
-    steps:
-      - uses: actions/checkout@v2
+  #   steps:
+  #     - uses: actions/checkout@v2
           
-      - name: Setup .NET SDK ${{env.DOTNETVERSION}}
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version:  '${{env.DOTNETVERSION}}'
+  #     - name: Setup .NET SDK ${{env.DOTNETVERSION}}
+  #       uses: actions/setup-dotnet@v1
+  #       with:
+  #         dotnet-version:  '${{env.DOTNETVERSION}}'
 
-      - name: Install .NET MAUI
-        shell: bash
-        run: |
-          dotnet nuget locals all --clear 
-          dotnet workload install maui --source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json --source https://api.nuget.org/v3/index.json
-          dotnet workload install android ios maccatalyst tvos macos maui wasm-tools --source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json --source https://api.nuget.org/v3/index.json
+  #     - name: Install .NET MAUI
+  #       shell: bash
+  #       run: |
+  #         dotnet nuget locals all --clear 
+  #         dotnet workload install maui --source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json --source https://api.nuget.org/v3/index.json
+  #         dotnet workload install android ios maccatalyst tvos macos maui wasm-tools --source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet7/nuget/v3/index.json --source https://api.nuget.org/v3/index.json
     
-      - name: Restore nuget packages
-        run: |
-          dotnet restore Fretty.sln
+  #     - name: Restore nuget packages
+  #       run: |
+  #         dotnet restore Fretty.sln
         
-      - name : Build iOS App
-        shell: bash
-        run: |
-          dotnet build -f net8.0-ios -c Debug /p:packageApp=false /p:buildForSimulator=true /p:ArchiveOnBuild=false
+  #     - name : Build iOS App
+  #       shell: bash
+  #       run: |
+  #         dotnet build -f net8.0-ios -c Debug /p:packageApp=false /p:buildForSimulator=true /p:ArchiveOnBuild=false
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: FrettyiOS
-          path: |
-            bin/Debug/net8.0-ios/iossimulator-x64/**/*.app
+  #     - uses: actions/upload-artifact@v2
+  #       with:
+  #         name: FrettyiOS
+  #         path: |
+  #           bin/Debug/net8.0-ios/iossimulator-x64/**/*.app
       
