@@ -27,10 +27,10 @@
                     SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
                 <Button
-                    x:Name="CounterBtn"
-                    Text="Open Fret Board" 
-                    SemanticProperties.Hint="Counts the number of times you click"
-                    Clicked="OnCounterClicked"
+                    x:Name="UploadButton"
+                    Text="Choose a file" 
+                    SemanticProperties.Hint="Opens file explorer to choose a file"
+                    Clicked="OnUploadClicked"
                     HorizontalOptions="Fill" />
                 
             </VerticalStackLayout>
