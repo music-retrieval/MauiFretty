@@ -23,9 +23,7 @@ jobs:
 
       - name: Self Sign MacCatalyst App
         run: |
-          echo "$CERTIFICATE_PEM" > cert.pem
-          security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db cert.pem
-          codesign --force --deep --sign "fretty.software" ./artifacts/**/*.pkg
+          echo "$CERTIFICATE_PEM" | security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db
 
       - name: Setup .NET SDK ${{env.DOTNETVERSION}}
         uses: actions/setup-dotnet@v1
