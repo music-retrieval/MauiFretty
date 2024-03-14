@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Fretty.Views.MainPage">
+             x:Class="Fretty.Views.FileUploadPage">
 
     <ContentView>
         <ScrollView>
@@ -30,7 +30,7 @@
                     x:Name="UploadButton"
                     Text="Choose a file" 
                     SemanticProperties.Hint="Opens file explorer to choose a file"
-                    Clicked="OnUploadClicked"
+                    Clicked="OnUpload"
                     HorizontalOptions="Fill" />
                 
             </VerticalStackLayout>
