@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace Fretty.Views;
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Controls;
@@ -22,7 +24,7 @@ public partial class FretBoard
     {
         var grid = new Grid
         {
-            BackgroundColor = Colors.Transparent
+            BackgroundColor = Colors.White
         };
 
         // TODO: make height and width dynamic
@@ -42,13 +44,25 @@ public partial class FretBoard
     private static void GenerateFretBoard()
     {
         // create the full-width vertical bars
-        GridAdd(null, LayoutOptions.Start, 0.5, null, 2, 6, 1, 25);
+        for (var i = 2; i < 6; i++)
+        {
+            for (var j = 1; j < 25; j++)
+            {
+                Grid.Add(GenerateBoxView(null, LayoutOptions.Start, j == 1 ? 2 : 0.5, null,
+                    color: j == 1 ? "#00FF00" : "#000000"), j, i);
+            }
+        }
         
         // create the half-width vertical bars
-        GridAdd(LayoutOptions.End, LayoutOptions.Start, 0.5, 
-            Grid.RowDefinitions[0].Height.Value / 2, 1, 2, 1, 25);
-        GridAdd(LayoutOptions.Start, LayoutOptions.Start, 0.5, 
-            Grid.RowDefinitions[0].Height.Value / 2, 6, 7, 1, 25);
+        for (var i = 1; i < 25; i++)
+        {
+            Grid.Add(GenerateBoxView(LayoutOptions.End, LayoutOptions.Start, i == 1 ? 2 : 0.5, 
+                Grid.RowDefinitions[0].Height.Value / 2, color: i == 1 ? "#00FF00" : "#000000"), i, 1);
+            
+            Grid.Add(GenerateBoxView(LayoutOptions.Start, LayoutOptions.Start, i == 1 ? 2 : 0.5, 
+                Grid.RowDefinitions[0].Height.Value / 2, color: i == 1 ? "#00FF00" : "#000000"), i, 6);
+        }
+
         
         // create the horizontal bars
         GridAdd(null, null, null, 0.5, 1, 7, 1, 24);
@@ -65,11 +79,13 @@ public partial class FretBoard
             }
         }
     }
-    private static BoxView GenerateBoxView(LayoutOptions? vertical, LayoutOptions? horizontal, double? width, double? height)
+    private static BoxView GenerateBoxView(LayoutOptions? vertical, LayoutOptions? horizontal, double? width, double? height, string color="#000000")
+        
     {
+        Console.Write(color);
         var boxView = new BoxView
         {
-            Color = Colors.White,
+            Color = Color.FromArgb(color),
             HeightRequest = height ?? Grid.RowDefinitions[0].Height.Value,
             WidthRequest = width ?? Grid.ColumnDefinitions[0].Width.Value,
             VerticalOptions = vertical ?? LayoutOptions.Center,
