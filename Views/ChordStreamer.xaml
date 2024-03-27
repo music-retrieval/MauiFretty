@@ -4,4 +4,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Fretty.Views.ChordStreamer">
     
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <!-- Title -->
+        <Label Text="Chord Wheel" FontSize="24" HorizontalOptions="Center" Margin="0,20,0,10" />
+
+        <!-- Chord Wheel -->
+        <Frame Grid.Row="1" CornerRadius="150" BackgroundColor="LightGray" Padding="20" Margin="20">
+            <!-- Place your chord wheel content here -->
+            <!-- For example, you can use Image or Shapes to represent the wheel -->
+            <!-- You can use different colors or images for different chords -->
+            <!-- This is just a placeholder, you need to design and implement the actual chord wheel -->
+        </Frame>
+    </Grid>
+
 </ContentPage>

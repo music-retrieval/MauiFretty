@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Fretty.Views.MainPage">
+             x:Class="Fretty.Views.FileUploadPage">
 
     <ContentView>
         <ScrollView>
@@ -16,7 +16,7 @@
                     SemanticProperties.Description="dot net bot in a race car number eight" />
 
                 <Label
-                    Text="Hello, World!"
+                    Text="Hello, Fretty!"
                     Style="{StaticResource Headline}"
                     SemanticProperties.HeadingLevel="Level1" />
 
@@ -27,11 +27,24 @@
                     SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
                 <Button
-                    x:Name="CounterBtn"
-                    Text="Open Fret Board" 
-                    SemanticProperties.Hint="Counts the number of times you click"
-                    Clicked="OnCounterClicked"
+                    x:Name="UploadButton"
+                    Text="Choose a file" 
+                    SemanticProperties.Hint="Opens file explorer to choose a file"
+                    Clicked="OnUpload"
                     HorizontalOptions="Fill" />
+                
+                <Button
+                    x:Name="ProcessButton"
+                    Text="Process Audio" 
+                    SemanticProperties.Hint="Processes the audio file"
+                    Clicked="ProcessAudio"
+                    HorizontalOptions="Fill"
+                    IsEnabled="False" />
+                
+                <Label
+                    x:Name="ResultLabel"
+                    class="resultLabel"
+                    Text="Result: Not yet computed" />
                 
             </VerticalStackLayout>
         </ScrollView>
