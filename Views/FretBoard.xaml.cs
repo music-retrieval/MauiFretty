@@ -24,18 +24,23 @@ public partial class FretBoard
     {
         var grid = new Grid
         {
-            BackgroundColor = Colors.White
-        };
+            BackgroundColor = Color.FromArgb("#EDFFEF"),
+            Margin = new Thickness(10)
+        }; 
+        // var rows = 8;
+        // var totalHeight = Application.Current?.MainPage?.Height;
 
         // TODO: make height and width dynamic
         for (var i = 0; i < 8; i++)
         {
-            grid.RowDefinitions.Add(new RowDefinition { Height = 50 });
+            //grid.RowDefinitions.Add(new RowDefinition {Height = 50})
+            grid.RowDefinitions.Add(new RowDefinition());
         }
         
-        for (var i = 0; i < 25; i++)
+        for (var i = 0; i < 13; i++)
         {
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = 37.5 });
+            //grid.RowDefinitions.Add(new ColumnDefinition {Width = 72.5})
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
         }
 
         return grid;
@@ -44,41 +49,57 @@ public partial class FretBoard
     private static void GenerateFretBoard()
     {
         // create the full-width vertical bars
-        for (var i = 2; i < 6; i++)
+        for (var i = 1; i < 7; i++)
         {
-            for (var j = 1; j < 25; j++)
+            for (var j = 1; j < 13; j++)
             {
                 Grid.Add(GenerateBoxView(null, LayoutOptions.Start, j == 1 ? 2 : 0.5, null,
-                    color: j == 1 ? "#00FF00" : "#000000"), j, i);
+                    color: j == 1 ? "#38753F" : "#000000"), j, i);
             }
         }
         
         // create the half-width vertical bars
-        for (var i = 1; i < 25; i++)
-        {
-            Grid.Add(GenerateBoxView(LayoutOptions.End, LayoutOptions.Start, i == 1 ? 2 : 0.5, 
-                Grid.RowDefinitions[0].Height.Value / 2, color: i == 1 ? "#00FF00" : "#000000"), i, 1);
-            
-            Grid.Add(GenerateBoxView(LayoutOptions.Start, LayoutOptions.Start, i == 1 ? 2 : 0.5, 
-                Grid.RowDefinitions[0].Height.Value / 2, color: i == 1 ? "#00FF00" : "#000000"), i, 6);
-        }
+        // for (var i = 1; i < 13; i++)
+        // {
+        //     Grid.Add(GenerateBoxView(LayoutOptions.End, LayoutOptions.Start, i == 1 ? 2 : 0.5, 
+        //         Grid.RowDefinitions[0].Height.Value, color: i == 1 ? "#38753F" : "#000000"), i, 1);
+        //     
+        //     Grid.Add(GenerateBoxView(LayoutOptions.Start, LayoutOptions.Start, i == 1 ? 2 : 0.5, 
+        //         Grid.RowDefinitions[0].Height.Value, color: i == 1 ? "#38753F" : "#000000"), i, 6);
+        // }
 
         
         // create the horizontal bars
-        GridAdd(null, null, null, 0.5, 1, 7, 1, 24);
-
-    }
-
-    private static void GridAdd(LayoutOptions? vertical, LayoutOptions? horizontal, double? width, double? height, int startI, int endI, int startJ, int endJ)
-    {
-        for (var i = startI; i < endI; i++)
+        for (var i = 1; i < 7; i++)
         {
-            for (var j = startJ; j < endJ; j++)
+            for (var j = 1; j < 12; j++)
             {
-                Grid.Add(GenerateBoxView(vertical, horizontal, width, height), j, i);
+                if (j == 1)
+                {
+                    Grid.Add(GenerateBoxView(null, LayoutOptions.End, Grid.ColumnDefinitions[0].Width.Value/2, 0.5 * i, color: "#000000"), 0, i);
+                    Grid.Add(GenerateBoxView(null, LayoutOptions.Start, Grid.ColumnDefinitions[0].Width.Value/2, 0.5 * i, color: "#000000"), 12, i);
+                } 
+                Grid.Add(GenerateBoxView(null, null, null, 0.5 * i, color: "#000000"), j, i);
+                
+                // Grid.Add(GenerateBoxView(null, null, null, 0.5 * i, color: "#000000"), j, i);
             }
         }
+
+
+        // GridAdd(null, null, null, 0.5, 1, 7, 1, 24);
+
     }
+
+    // private static void GridAdd(LayoutOptions? vertical, LayoutOptions? horizontal, double? width, double? height, int startI, int endI, int startJ, int endJ)
+    // {
+    //     for (var i = startI; i < endI; i++)
+    //     {
+    //         for (var j = startJ; j < endJ; j++)
+    //         {
+    //             Grid.Add(GenerateBoxView(vertical, horizontal, width, height), j, i);
+    //         }
+    //     }
+    // }
     private static BoxView GenerateBoxView(LayoutOptions? vertical, LayoutOptions? horizontal, double? width, double? height, string color="#000000")
         
     {
