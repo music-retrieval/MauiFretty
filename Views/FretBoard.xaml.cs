@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace Fretty.Views;
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Controls;
@@ -8,102 +6,69 @@ using Microsoft.Maui.Graphics;
 
 public partial class FretBoard
 {
-    private static readonly Grid Grid = GenerateGrid();
-    
+    private const int NumRows = 7;
+    private const int NumCols = 15;
     public FretBoard()
     {
         InitializeComponent();
+        GenerateGrid();
         GenerateFretBoard();
         GenerateNote("E", 3, 3);
-        
-        // Set the grid as the content of the page
-        Content = Grid;
+
     }
 
-    private static Grid GenerateGrid()
+    private void GenerateGrid()
     {
-        var grid = new Grid
-        {
-            BackgroundColor = Color.FromArgb("#EDFFEF"),
-            Margin = new Thickness(10)
-        }; 
-        // var rows = 8;
-        // var totalHeight = Application.Current?.MainPage?.Height;
-
         // TODO: make height and width dynamic
-        for (var i = 0; i < 8; i++)
+        for (var i = 0; i < NumRows; i++)
         {
-            //grid.RowDefinitions.Add(new RowDefinition {Height = 50})
-            grid.RowDefinitions.Add(new RowDefinition());
+            Grid.RowDefinitions.Add(new RowDefinition {Height = new GridLength(50)});
         }
         
-        for (var i = 0; i < 13; i++)
+        for (var i = 0; i < NumCols; i++)
         {
-            //grid.RowDefinitions.Add(new ColumnDefinition {Width = 72.5})
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            Grid.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(59)});
         }
-
-        return grid;
     }
 
-    private static void GenerateFretBoard()
+    private void GenerateFretBoard()
     {
         // create the full-width vertical bars
-        for (var i = 1; i < 7; i++)
+        for (var i = 0; i < NumRows - 1; i++)
         {
-            for (var j = 1; j < 13; j++)
+            for (var j = 1; j < NumCols + 1; j++)
             {
                 Grid.Add(GenerateBoxView(null, LayoutOptions.Start, j == 1 ? 2 : 0.5, null,
                     color: j == 1 ? "#38753F" : "#000000"), j, i);
             }
         }
         
-        // create the half-width vertical bars
-        // for (var i = 1; i < 13; i++)
-        // {
-        //     Grid.Add(GenerateBoxView(LayoutOptions.End, LayoutOptions.Start, i == 1 ? 2 : 0.5, 
-        //         Grid.RowDefinitions[0].Height.Value, color: i == 1 ? "#38753F" : "#000000"), i, 1);
-        //     
-        //     Grid.Add(GenerateBoxView(LayoutOptions.Start, LayoutOptions.Start, i == 1 ? 2 : 0.5, 
-        //         Grid.RowDefinitions[0].Height.Value, color: i == 1 ? "#38753F" : "#000000"), i, 6);
-        // }
-
-        
         // create the horizontal bars
-        for (var i = 1; i < 7; i++)
+        for (var i = 0; i < NumRows - 1; i++)
         {
-            for (var j = 1; j < 12; j++)
+            for (var j = 1; j < NumCols; j++)
             {
                 if (j == 1)
                 {
-                    Grid.Add(GenerateBoxView(null, LayoutOptions.End, Grid.ColumnDefinitions[0].Width.Value/2, 0.5 * i, color: "#000000"), 0, i);
-                    Grid.Add(GenerateBoxView(null, LayoutOptions.Start, Grid.ColumnDefinitions[0].Width.Value/2, 0.5 * i, color: "#000000"), 12, i);
+                    // add the half length pieces
+                    Grid.Add(GenerateBoxView(null, LayoutOptions.End, 
+                        Grid.ColumnDefinitions[0].Width.Value/2, 0.5 * (i+1), color: "#000000"), 
+                        0, i);
+                    Grid.Add(GenerateBoxView(null, LayoutOptions.Start, 
+                        Grid.ColumnDefinitions[0].Width.Value/2, 0.5 * (i+1), color: "#000000"), 
+                        NumCols, i);
                 } 
-                Grid.Add(GenerateBoxView(null, null, null, 0.5 * i, color: "#000000"), j, i);
-                
-                // Grid.Add(GenerateBoxView(null, null, null, 0.5 * i, color: "#000000"), j, i);
+                Grid.Add(GenerateBoxView(null, null, null, 0.5 * (i+1), color: "#000000"), 
+                    j, i);
             }
         }
 
-
-        // GridAdd(null, null, null, 0.5, 1, 7, 1, 24);
-
     }
 
-    // private static void GridAdd(LayoutOptions? vertical, LayoutOptions? horizontal, double? width, double? height, int startI, int endI, int startJ, int endJ)
-    // {
-    //     for (var i = startI; i < endI; i++)
-    //     {
-    //         for (var j = startJ; j < endJ; j++)
-    //         {
-    //             Grid.Add(GenerateBoxView(vertical, horizontal, width, height), j, i);
-    //         }
-    //     }
-    // }
-    private static BoxView GenerateBoxView(LayoutOptions? vertical, LayoutOptions? horizontal, double? width, double? height, string color="#000000")
+    private BoxView GenerateBoxView(LayoutOptions? vertical, LayoutOptions? horizontal, double? width, double? height, 
+        string color="#000000")
         
     {
-        Console.Write(color);
         var boxView = new BoxView
         {
             Color = Color.FromArgb(color),
@@ -116,7 +81,7 @@ public partial class FretBoard
         return boxView;
     }
     
-    private static void GenerateNote(string note, int row, int col)
+    private void GenerateNote(string note, int row, int col)
     {
         var circle = new Ellipse
         {
@@ -137,6 +102,17 @@ public partial class FretBoard
         
         Grid.Add(circle, col, row);
         Grid.Add(label, col, row);
-    }    
+    }
+
+
+    private void KeyChange(object sender, EventArgs e)
+    {
+        // TODO: Bold active key and draw the correct notes
+        var button = (Button) sender;
+        button.FontAttributes =
+            button.FontAttributes == FontAttributes.Bold ? FontAttributes.None : FontAttributes.Bold;
+
+    }
+    
     
 }
