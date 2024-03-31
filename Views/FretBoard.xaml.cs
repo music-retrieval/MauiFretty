@@ -2,7 +2,8 @@ namespace Fretty.Views;
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
-
+using System;
+using Microsoft.Maui;
 
 public partial class FretBoard
 {
