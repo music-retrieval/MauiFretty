@@ -18,19 +18,27 @@
                         </Trigger>
                 </Style.Triggers>
             </Style>
+            <Style x:Key="EllipseStyle" TargetType="Ellipse">
+                <Setter Property="Fill" Value="#6638753F"/>
+                <Setter Property="Stroke" Value="#FF38753F"/>
+                <Setter Property="HeightRequest" Value="30"/>
+                <Setter Property="WidthRequest" Value="30"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
     </ContentPage.Resources>
 
     <StackLayout>
         <StackLayout Orientation="Horizontal" Margin="70,0,0,0" Spacing="20">
             <Button x:Name="CMajor"
                     Text="C Major" 
-                    Clicked="KeyChange" 
+                    Clicked="KeyChange"
                     Style="{StaticResource TextButtonStyle}"/>
             
             <Button x:Name="DMajor"
-                    Text="D Major" 
+                    Text="D Major"
                     ClassId="d_major"
-                    Clicked="KeyChange" 
+                    Clicked="KeyChange"
                     Style="{StaticResource TextButtonStyle}"/>
             
             <Button x:Name="EMajor"
@@ -60,6 +68,44 @@
         </StackLayout>
         <Grid x:Name="Grid"
               BackgroundColor="Transparent">
+                
+                <Ellipse
+                        Grid.Row="2"
+                        Grid.Column="5"
+                        Grid.RowSpan="2"
+                        Style="{StaticResource EllipseStyle}"/>
+                <Ellipse
+                        Grid.Row="2"
+                        Grid.Column="7"
+                        Grid.RowSpan="2"
+                        Style="{StaticResource EllipseStyle}"/>
+                <Ellipse
+                        Grid.Row="2"
+                        Grid.Column="9"
+                        Grid.RowSpan="2"
+                        Style="{StaticResource EllipseStyle}"/>
+                <Ellipse
+                        Grid.Row="2"
+                        Grid.Column="11"
+                        Grid.RowSpan="2"
+                        Style="{StaticResource EllipseStyle}"/>
+                <Ellipse
+                        Grid.Row="1"
+                        Grid.Column="13"
+                        Grid.RowSpan="2"
+                        Style="{StaticResource EllipseStyle}"/>
+                
+                <Ellipse
+                        Grid.Row="3"
+                        Grid.Column="13"
+                        Grid.RowSpan="2"
+                        Style="{StaticResource EllipseStyle}"/>
+                <Ellipse
+                        Grid.Row="2"
+                        Grid.Column="16"
+                        Grid.RowSpan="2"
+                        Grid.ColumnSpan="2"
+                        Style="{StaticResource EllipseStyle}"/>
 
         </Grid>
     </StackLayout>
