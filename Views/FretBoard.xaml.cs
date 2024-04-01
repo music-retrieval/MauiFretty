@@ -5,7 +5,7 @@ using Microsoft.Maui.Graphics;
 using System;
 using Microsoft.Maui;
 using System.Collections.Generic;
-public partial class FretBoard
+public partial class FretBoard: IFretBoard
 {
     private const int NumRows = 7;
     private const int NumCols = 18;
@@ -23,6 +23,30 @@ public partial class FretBoard
         InitializeComponent();
         GenerateGrid();
         GenerateFretBoard();
+        DisplayChord([[2, 5], [2, 7], [2, 9], [2, 11], [1, 13], [3, 13], [2, 16]]);
+    }
+    
+    public void DisplayChord(IEnumerable<int[]> coords)
+    {
+        foreach (int[] coord in coords)
+        {
+            (int x, int y) = (coord[0], coord[1]);
+        
+            // Create Ellipse
+            Ellipse ellipse = new Ellipse
+            {
+                Style = (Style)Resources["EllipseStyle"],
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand
+            };
+
+            // Add Ellipse to Grid
+            Grid.SetRow((BindableObject)ellipse, x); // Assuming y represents Grid.Row
+            Grid.SetColumn((BindableObject)ellipse, y); // Assuming x represents Grid.Column
+            Grid.SetRowSpan((BindableObject)ellipse, 2); // Assuming you want a row span of 2
+            Grid.SetColumnSpan((BindableObject)ellipse, 2); // Assuming you want a column span of 2
+            Grid.Children.Add(ellipse); // Adding the ellipse to the Grid
+        }
     }
 
     private void GenerateGrid()
