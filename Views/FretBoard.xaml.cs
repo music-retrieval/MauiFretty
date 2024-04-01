@@ -23,28 +23,29 @@ public partial class FretBoard: IFretBoard
         InitializeComponent();
         GenerateGrid();
         GenerateFretBoard();
-        DisplayChord([[2, 5], [2, 7], [2, 9], [2, 11], [1, 13], [3, 13], [2, 16]]);
+        GenerateFretDots([[2, 5, 2, 1], [2, 7, 2, 1], [2, 9, 2, 1], [2, 11, 2, 1], [1, 13, 2, 1], [3, 13, 2, 1], [2, 16, 2, 2]]);
     }
     
-    public void DisplayChord(IEnumerable<int[]> coords)
+    private void GenerateFretDots(IEnumerable<int[]> coords)
     {
         foreach (int[] coord in coords)
         {
-            (int x, int y) = (coord[0], coord[1]);
+            (int x, int y, int rowSpan, int colSpan) = (coord[0], coord[1], coord[2], coord[3]);
         
             // Create Ellipse
             Ellipse ellipse = new Ellipse
             {
                 Style = (Style)Resources["EllipseStyle"],
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill
             };
 
             // Add Ellipse to Grid
             Grid.SetRow((BindableObject)ellipse, x); // Assuming y represents Grid.Row
             Grid.SetColumn((BindableObject)ellipse, y); // Assuming x represents Grid.Column
-            Grid.SetRowSpan((BindableObject)ellipse, 2); // Assuming you want a row span of 2
-            Grid.SetColumnSpan((BindableObject)ellipse, 2); // Assuming you want a column span of 2
+            Grid.SetRowSpan((BindableObject)ellipse, rowSpan);
+            Grid.SetColumnSpan((BindableObject)ellipse, colSpan);
+            
             Grid.Children.Add(ellipse); // Adding the ellipse to the Grid
         }
     }
