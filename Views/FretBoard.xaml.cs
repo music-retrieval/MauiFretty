@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public partial class FretBoard
 {
     private const int NumRows = 7;
-    private const int NumCols = 15;
+    private const int NumCols = 18;
     private readonly Dictionary<string, object[]> _strings = new Dictionary<string, object[]>
     {
         {"E", [0, 3, "#FF97BFFF"]},
@@ -30,17 +30,17 @@ public partial class FretBoard
         const double rowLength = 50;
         const double colLength = 59;
         
-        for (var i = 0; i < NumRows; i++)
+        for (int i = 0; i < NumRows; i++)
         {
             Grid.RowDefinitions.Add(new RowDefinition {Height = new GridLength(rowLength)});
         }
         
         
-        for (var i = 0; i < NumCols+3; i++)
+        for (int i = 0; i < NumCols; i++)
         {
             // create full-width columns for middle and half-width for beginning and end of fretboard
             Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(
-                colLength / (i is > NumCols or < 2 ? 2 : 1))});
+                colLength / (i is > NumCols - 3 or < 2 ? 2 : 1))});
         }
 
     }
@@ -48,18 +48,18 @@ public partial class FretBoard
     private void GenerateFretBoard()
     {
         // create the full-width vertical bars
-        for (var i = 0; i < NumRows - 1; i++)
+        for (int i = 0; i < NumRows - 1; i++)
         {
-            for (var j = 2; j < NumCols + 2; j++)
+            for (int j = 2; j < NumCols - 1; j++)
             {
                 Grid.Add(GenerateBoxView(i, j, LayoutOptions.Start, null, j == 2 ? 2 : 0.5, null, color: j == 2 ? "#38753F" : "#000000"), j, i);
             }
         }
         
         // create the horizontal bars
-        for (var i = 0; i < NumRows - 1; i++)
+        for (int i = 0; i < NumRows - 1; i++)
         {
-            for (var j = 1; j <= NumCols + 1; j++)
+            for (int j = 1; j < NumCols - 1; j++)
             {
                 Grid.Add(GenerateBoxView(i, j, null, null, null, 0.5 * (i + 1), color: "#000000"), 
                     j, i);
@@ -67,10 +67,10 @@ public partial class FretBoard
         }
             
         
-        foreach (var (note, info) in _strings)
+        foreach ((string note, object[] info) in _strings)
         {
             // add the string label and note on beginning of fretboard
-            var (index, number, color) = ((int)info[0], (int)info[1], (string)info[2]);
+            (int index, int number, string color) = ((int)info[0], (int)info[1], (string)info[2]);
             GenerateNote(note, "#00000000", 0, index, bolded: false);
             GenerateNote(note, color, 1, index);
             
@@ -88,7 +88,7 @@ public partial class FretBoard
         double? width, double? height, string color="#000000")
         
     {
-        var boxView = new BoxView
+        BoxView boxView = new BoxView
         {
             Color = Color.FromArgb(color),
             HeightRequest = height ?? Grid.RowDefinitions[i].Height.Value,
@@ -103,7 +103,7 @@ public partial class FretBoard
     private void GenerateNote(string note, string color, int col, int row, bool bolded = true)
     {
 
-        var circle = new Ellipse
+        Ellipse circle = new Ellipse
         {
             WidthRequest = 20,
             HeightRequest = 20,
@@ -112,7 +112,7 @@ public partial class FretBoard
             VerticalOptions = LayoutOptions.Center,
         };
         
-        var label = new Label
+        Label label = new Label
         {
             Text = note,
             FontSize = 16,
@@ -130,7 +130,7 @@ public partial class FretBoard
     private void KeyChange(object sender, EventArgs e)
     {
         // TODO: Bold active key and draw the correct notes
-        var button = (Button) sender;
+        Button button = (Button) sender;
         button.FontAttributes =
             button.FontAttributes == FontAttributes.Bold ? FontAttributes.None : FontAttributes.Bold;
 
