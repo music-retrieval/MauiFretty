@@ -362,5 +362,10 @@ public class Chords
 
         return chordsContainingNotes;
     }
+    
+    public static Note[] ToNotes(ChordName name)
+    {
+        return AllChords[name].Keys.ToArray();
+    }
 
 }

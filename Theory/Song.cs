@@ -1,30 +1,26 @@
 namespace Fretty.Theory;
 
-public class Song(string songName, Key songKey, Chords.ChordName[] songChords)
+public class Song(string songName, Key songKey, List<Chords.ChordName> songChords)
 {
+    //Suggests scales that contain the notes from the chords in the song
+    public List<Scales.ScaleName> SuggestScales(){
+        return Scales.ScalesContainingChords(songChords);
+    }
 
-    private string _name = songName;
-    private Key _key = songKey;
-    private Chords.ChordName[] _chords = songChords;
+    //Adds a chord to the Song instance's songChords
+    public void AddChord(Chords.ChordName newChord){
+        songChords.Add(newChord);
+    }
 
+    //Removes a chord from the Song instance's songChords
+    public void RemoveChord(Chords.ChordName badChord)
+    {
+        songChords.Remove(badChord);
+    }
 
-    //TODO: implement
-    // public suggest_scale(){
-    //     return null;
-    // }
-
-    //TODO: implement
-    // public add_chord(Chord new_chord){
-    //     return null;
-    // }
-
-    //TODO: implement
-    // public remove_chord(Chord bad_chord){
-    //     return null;
-    // }
-
-    // public change_name(string song_name){
-    //     _name = song_name;
-    // }
+    //Changes the name of the song
+    public void ChangeName(string name){
+        songName = name;
+    }
 
 }

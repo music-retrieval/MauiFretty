@@ -154,32 +154,15 @@ public class Scales
 
 
     //TODO, change this to use Chord class? Or maybe just have a function in chord class that returns array of notes
-    public static List<ScaleName> ScalesContainingChords(Note[][] chords)
+    public static List<ScaleName> ScalesContainingChords(List<Chords.ChordName> chords)
     {
         // List of scales that contain all chords
-        List<ScaleName> scalesContainingChords = new List<ScaleName>();
-
-        // Check each scale to see if it contains all chords
-        foreach (var scale in AllScales)
-        {
-            // Check if all chords are in the scale
-            bool allChordsInScale = true;
-            foreach (var chord in chords)
-            {
-                if (!chord.All(chordNote => scale.Value.Keys.Any(scaleNote => scaleNote.Letter == chordNote.Letter)))
-                {
-                    // If any chord is not in the scale, break and check the next scale
-                    allChordsInScale = false;
-                    break;
-                }
-            }
-            // If all chords are in the scale, add the scale to the list
-            if (allChordsInScale)
-            {
-                scalesContainingChords.Add(scale.Key);
-            }
-        }
-
+        List<ScaleName> scalesContainingChords = [];
+        
+        //For each scale, add the scale if all chords are in the scale
+        //done by converting the chords to notes and checking if all notes are in the scale (boolean)
+        scalesContainingChords.AddRange(from scale in AllScales let allChordsInScale = chords.All(chordName => Chords.ToNotes(chordName).All(chordNote => scale.Value.Keys.Any(scaleNote => scaleNote.Letter == chordNote.Letter))) where allChordsInScale select scale.Key);
+        
         // Return the list of scales containing all chords
         return scalesContainingChords;
     }

@@ -18,14 +18,14 @@ public class GuitarString
 
     // Returns the note at the given fret
     // where fret 0 is the open string 
-    public Note at_fret(int fret) {
+    public Note AtFret(int fret) {
         return _stringNotes[fret];
     }
 
     // Returns the array of Notes that 
     // represents all of the notes on 
     // the Guitar_String
-    public Note[] to_notes_array() {
+    public Note[] ToNotesArray() {
         return _stringNotes;
     }
 
