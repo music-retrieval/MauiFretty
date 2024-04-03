@@ -5,10 +5,10 @@ using Microsoft.Maui.Graphics;
 using System;
 using Microsoft.Maui;
 using System.Collections.Generic;
+
 public partial class FretBoard: IFretBoard
 {
-    private const int NumRows = 7;
-    private const int NumCols = 18;
+
     private readonly Dictionary<string, object[]> _strings = new Dictionary<string, object[]>
     {
         {"E", [0, 3, "#FF97BFFF"]},
@@ -20,17 +20,24 @@ public partial class FretBoard: IFretBoard
 
     public FretBoard()
     {
+        const int numRows = 7;
+        const int numCols = 18;
         InitializeComponent();
-        GenerateGrid();
-        GenerateFretBoard();
+        GenerateGrid(numRows, numCols);
+        GenerateFretBoard(numRows, numCols);
         GenerateFretDots([[2, 5, 2, 1], [2, 7, 2, 1], [2, 9, 2, 1], [2, 11, 2, 1], [1, 13, 2, 1], [3, 13, 2, 1], [2, 16, 2, 2]]);
     }
-    
-    private void GenerateFretDots(IEnumerable<int[]> coords)
+
+    public void DrawChord(IEnumerable<int[]> coordinates)
     {
-        foreach (int[] coord in coords)
+        throw new NotImplementedException();
+    }
+
+    private void GenerateFretDots(IEnumerable<int[]> coordinates)
+    {
+        foreach (int[] coordinate in coordinates)
         {
-            (int x, int y, int rowSpan, int colSpan) = (coord[0], coord[1], coord[2], coord[3]);
+            (int x, int y, int rowSpan, int colSpan) = (coordinate[0], coordinate[1], coordinate[2], coordinate[3]);
         
             // Create Ellipse
             Ellipse ellipse = new Ellipse
@@ -50,41 +57,44 @@ public partial class FretBoard: IFretBoard
         }
     }
 
-    private void GenerateGrid()
+    private void GenerateGrid(int numRows, int numCols)
     {
         const double rowLength = 50;
         const double colLength = 59;
         
-        for (int i = 0; i < NumRows; i++)
+        for (int i = 0; i < numRows; i++)
         {
             Grid.RowDefinitions.Add(new RowDefinition {Height = new GridLength(rowLength)});
         }
         
         
-        for (int i = 0; i < NumCols; i++)
+        for (int i = 0; i < numCols; i++)
         {
             // create full-width columns for middle and half-width for beginning and end of fretboard
-            Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(
-                colLength / (i is > NumCols - 3 or < 2 ? 2 : 1))});
+            Grid.ColumnDefinitions.Add(new ColumnDefinition
+            {
+                Width = new GridLength(
+                    colLength / (i > numCols - 3 || i < 2 ? 2 : 1))
+            });
         }
 
     }
 
-    private void GenerateFretBoard()
+    private void GenerateFretBoard(int numRows, int numCols)
     {
         // create the full-width vertical bars
-        for (int i = 0; i < NumRows - 1; i++)
+        for (int i = 0; i < numRows - 1; i++)
         {
-            for (int j = 2; j < NumCols - 1; j++)
+            for (int j = 2; j < numCols - 1; j++)
             {
                 Grid.Add(GenerateBoxView(i, j, LayoutOptions.Start, null, j == 2 ? 2 : 0.5, null, color: j == 2 ? "#38753F" : "#000000"), j, i);
             }
         }
         
         // create the horizontal bars
-        for (int i = 0; i < NumRows - 1; i++)
+        for (int i = 0; i < numRows - 1; i++)
         {
-            for (int j = 1; j < NumCols - 1; j++)
+            for (int j = 1; j < numCols - 1; j++)
             {
                 Grid.Add(GenerateBoxView(i, j, null, null, null, 0.5 * (i + 1), color: "#000000"), 
                     j, i);
