@@ -4,62 +4,70 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Fretty.Views.FretBoard">
     
-    <Grid BackgroundColor="Transparent">
-        <!-- Define Rows -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <ContentPage.Resources>
+            <Style x:Key="TextButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="TextColor" Value="#38753F"/>
+                <Setter Property="BorderWidth" Value="0"/>
+                <Setter Property="ContentLayout" Value="Left"/>
+                <Style.Triggers>
+                        <Trigger TargetType="Button"
+                                 Property="IsPressed"
+                                 Value="True">
+                                <Setter Property="FontAttributes" Value="Bold"/>
+                        </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="EllipseStyle" TargetType="Ellipse">
+                <Setter Property="Fill" Value="#6638753F"/>
+                <Setter Property="Stroke" Value="#FF38753F"/>
+                <Setter Property="HeightRequest" Value="30"/>
+                <Setter Property="WidthRequest" Value="30"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+    </ContentPage.Resources>
 
-        <!-- Define Columns -->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+    <StackLayout>
+        <StackLayout Orientation="Horizontal" Margin="70,0,0,0" Spacing="20">
+            <Button x:Name="CMajor"
+                    Text="C Major" 
+                    Clicked="KeyChange"
+                    Style="{StaticResource TextButtonStyle}"/>
+            
+            <Button x:Name="DMajor"
+                    Text="D Major"
+                    ClassId="d_major"
+                    Clicked="KeyChange"
+                    Style="{StaticResource TextButtonStyle}"/>
+            
+            <Button x:Name="EMajor"
+                    Text="E Major"
+                    ClassId="e_major"
+                    Clicked="KeyChange"
+                    Style="{StaticResource TextButtonStyle}"/>
+            
+            <Button x:Name="FMajor"
+                    Text="F Major"
+                    ClassId="f_major"
+                    Clicked="KeyChange"
+                    Style="{StaticResource TextButtonStyle}"/>
+            
+            <Button x:Name="AMajor"
+                    Text="A Major"
+                    ClassId="a_major"
+                    Clicked="KeyChange"
+                    Style="{StaticResource TextButtonStyle}" />
+            
+            <Button x:Name="BMajor"
+                    Text="B Major"
+                    ClassId="b_major"
+                    Clicked="KeyChange"
+                    Style="{StaticResource TextButtonStyle}" />
 
-        <!-- Grid Elements -->
-        <!-- Row 1 -->
-        <BoxView Color="Red" Grid.Row="0" Grid.Column="0" />
-        <BoxView Color="Green" Grid.Row="0" Grid.Column="1" />
-        <BoxView Color="Blue" Grid.Row="0" Grid.Column="2" />
-        <BoxView Color="Orange" Grid.Row="0" Grid.Column="3" />
-        <BoxView Color="Yellow" Grid.Row="0" Grid.Column="4" />
-        <!-- Row 2 -->
-        <BoxView Color="Purple" Grid.Row="1" Grid.Column="0" />
-        <BoxView Color="Pink" Grid.Row="1" Grid.Column="1" />
-        <BoxView Color="Cyan" Grid.Row="1" Grid.Column="2" />
-        <BoxView Color="Magenta" Grid.Row="1" Grid.Column="3" />
-        <BoxView Color="LightGreen" Grid.Row="1" Grid.Column="4" />
-        <!-- Row 3 -->
-        <BoxView Color="LightBlue" Grid.Row="2" Grid.Column="0" />
-        <BoxView Color="LightGray" Grid.Row="2" Grid.Column="1" />
-        <BoxView Color="DarkRed" Grid.Row="2" Grid.Column="2" />
-        <BoxView Color="DarkGreen" Grid.Row="2" Grid.Column="3" />
-        <BoxView Color="DarkBlue" Grid.Row="2" Grid.Column="4" />
-        <!-- Row 4 -->
-        <BoxView Color="DarkOrange" Grid.Row="3" Grid.Column="0" />
-        <BoxView Color="DarkTurquoise" Grid.Row="3" Grid.Column="1" />
-        <BoxView Color="DarkGoldenrod" Grid.Row="3" Grid.Column="2" />
-        <BoxView Color="DarkOrange" Grid.Row="3" Grid.Column="3" />
-        <BoxView Color="DarkCyan" Grid.Row="3" Grid.Column="4" />
-        <!-- Row 5 -->
-        <BoxView Color="DarkMagenta" Grid.Row="4" Grid.Column="0" />
-        <BoxView Color="DarkSalmon" Grid.Row="4" Grid.Column="1" />
-        <BoxView Color="DarkSeaGreen" Grid.Row="4" Grid.Column="2" />
-        <BoxView Color="DarkSlateBlue" Grid.Row="4" Grid.Column="3" />
-        <BoxView Color="DarkTurquoise" Grid.Row="4" Grid.Column="4" />
-        <!-- Row 6 -->
-        <BoxView Color="DarkViolet" Grid.Row="5" Grid.Column="0" />
-        <BoxView Color="DeepPink" Grid.Row="5" Grid.Column="1" />
-        <BoxView Color="DeepSkyBlue" Grid.Row="5" Grid.Column="2" />
-        <BoxView Color="DimGray" Grid.Row="5" Grid.Column="3" />
-        <BoxView Color="DodgerBlue" Grid.Row="5" Grid.Column="4" />
-    </Grid>
+        </StackLayout>
+        <Grid x:Name="Grid"
+              BackgroundColor="Transparent">
+        </Grid>
+    </StackLayout>
 </ContentPage>
