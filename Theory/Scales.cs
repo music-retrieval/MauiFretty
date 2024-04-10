@@ -1,7 +1,7 @@
 namespace Fretty.Theory;
 
 // Class holding all scales and scale-related functions
-public class Scales
+public static class Scales
 {
 
     // Enum of all scale names

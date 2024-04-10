@@ -37,34 +37,20 @@ public struct Note
 
     public Note SemitoneUp() 
     {
-        var index = Array.IndexOf(_allNotes, _letter);
-
-        if (index == 11)
-        {
-            index = 0;
-        }
-        else
-        {
-            index += 1;
-        }
-
-        return new Note(_allNotes[index]);
+        int index = Array.IndexOf(_allNotes, _letter);
+        
+        int newIndex = index >= _allNotes.Length - 1 ? 0 : index + 1;
+        
+        return new Note(_allNotes[newIndex]);
     }
 
     public Note SemitoneDown()
     {
-        var index = Array.IndexOf(_allNotes, _letter);
+        int index = Array.IndexOf(_allNotes, _letter);
         
-        if(index == 0) 
-        {
-            index = 11;
-        }
-        else 
-        {
-            index -= 1;
-        }
+        int newIndex = index == 0 ? _allNotes.Length - 1 : index - 1;
 
-        return new Note(_allNotes[index]);
+        return new Note(_allNotes[newIndex]);
     }
 }
 

@@ -1,6 +1,6 @@
 namespace Fretty.Theory;
 
-public class Chords
+public static class Chords
 {
     public enum ChordName
     {

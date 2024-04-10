@@ -1,7 +1,5 @@
 namespace Fretty.Theory;
 
-
-
 public class Tuning
 {
     public GuitarString[] Strings { get; }
