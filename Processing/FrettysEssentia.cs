@@ -7,7 +7,7 @@ namespace Fretty.Processing;
 // Represents a connection to our FrettysEssentia server
 public class FrettysEssentia(string address, int port) : IServer
 {
-    public FrettysEssentia() : this("127.0.0.1", 27015) {}
+    public FrettysEssentia() : this("44.223.139.104", 80) {}
 
     private TcpClient  Client => new(address, port);
     
