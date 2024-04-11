@@ -2,5 +2,7 @@ namespace Fretty.Shared;
 
 public interface IAudioAnalysis
 {
-    string[] Chords();
+    IEnumerable<ChordMetric> Chords();
+
+    KeyMetric Key();
 }
