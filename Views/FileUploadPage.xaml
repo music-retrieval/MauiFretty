@@ -44,6 +44,7 @@
                 <Label
                     x:Name="ResultLabel"
                     class="resultLabel"
+                    TextColor="Black"
                     Text="Result: Not yet computed" />
                 
             </VerticalStackLayout>

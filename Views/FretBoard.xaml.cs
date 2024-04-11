@@ -161,7 +161,6 @@ public partial class FretBoard: IFretBoard
         Grid.Add(label, col, row);
     }
 
-
     private void KeyChange(object sender, EventArgs e)
     {
         // TODO: Bold active key and draw the correct notes

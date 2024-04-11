@@ -1,6 +1,6 @@
 namespace Fretty.Views;
 
-public partial class ChordStreamer : ContentPage
+public partial class ChordStreamer
 {
     public ChordStreamer()
     {
