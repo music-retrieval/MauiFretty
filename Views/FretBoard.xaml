@@ -26,6 +26,13 @@
                 <Setter Property="HorizontalOptions" Value="Center"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
+        <Style x:Key="PickerStyle" TargetType="Picker">
+                <Setter Property="BackgroundColor" Value="#38753F"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontAutoScalingEnabled" Value="True"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+        </Style>
     </ContentPage.Resources>
 
     <StackLayout>
