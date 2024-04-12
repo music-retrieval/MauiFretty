@@ -1,53 +1,148 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Fretty.Views.FileUploadPage">
-
+             x:Class="Fretty.Views.FileUploadPage"
+             BackgroundColor="LightCyan">
     <ContentView>
         <ScrollView>
-            <VerticalStackLayout
-                Padding="30,0"
-                Spacing="25">
+            <Grid>
+                <!-- Define Rows -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Define Columns -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 
                 <Image
                     Source="dotnet_bot.png"
                     HeightRequest="185"
                     Aspect="AspectFit"
                     SemanticProperties.Description="dot net bot in a race car number eight" />
-
-                <Label
-                    Text="Hello, Fretty!"
+                    
+                <Label 
+                    x:Name="DescriptionLabel"
                     Style="{StaticResource Headline}"
-                    SemanticProperties.HeadingLevel="Level1" />
-
-                <Label
-                    Text="Welcome to &#10;.NET Multi-platform App UI"
-                    Style="{StaticResource SubHeadline}"
-                    SemanticProperties.HeadingLevel="Level2"
-                    SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
+                    SemanticProperties.HeadingLevel="Level1"
+                    TextColor="Black"
+                    FontSize="24"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    Grid.Row="2"
+                    Grid.Column="3"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="3"
+                    LineBreakMode="WordWrap">
+                    Welcome to our revolutionary music companion! With our website, you can effortlessly decode any song's chords, visualize them on a virtual fret board, and receive personalized suggestions to craft mesmerizing guitar solos. &#10; &#10; Simply upload your favorite song, and let our algorithms do the rest. &#10; &#10; Whether you're a beginner learning chords or an experienced player seeking inspiration, our platform is your ultimate guide to unlocking the full potential of your guitar playing. Join us on this musical journey and elevate your skills to new heights!
+                </Label>
 
                 <Button
                     x:Name="UploadButton"
-                    Text="Choose a file" 
                     SemanticProperties.Hint="Opens file explorer to choose a file"
+                    Text="Upload"
                     Clicked="OnUpload"
-                    HorizontalOptions="Fill" />
+                    BackgroundColor="SeaGreen"
+                    FontSize="50"
+                    FontAttributes="Bold"
+                    TextColor="LightCyan"
+                    CornerRadius="3"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    Padding="18"
+                    Grid.Row="4"
+                    Grid.Column="4"
+                    Grid.ColumnSpan="1"
+                    />
                 
                 <Button
                     x:Name="ProcessButton"
-                    Text="Process Audio" 
                     SemanticProperties.Hint="Processes the audio file"
+                    Text="Process Audio" 
                     Clicked="ProcessAudio"
-                    HorizontalOptions="Fill"
-                    IsEnabled="False" />
+                    TextColor="LightCyan"
+                    BackgroundColor="DarkSlateGray"
+                    FontSize="50"
+                    FontAttributes="Bold"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    IsEnabled="False" 
+                    CornerRadius="3"
+                    Grid.Row="6"
+                    Grid.Column="6"
+                    Grid.ColumnSpan="1"
+                    IsVisible="False"
+                    />
                 
-                <Label
-                    x:Name="ResultLabel"
-                    class="resultLabel"
-                    TextColor="Black"
-                    Text="Result: Not yet computed" />
+                <!--After audio is processed everything above is hidden and the bellow objects are turned visible-->
+                <Border x:Name="ResultBorder" Width="100" Height="40" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" IsEnabled="False" IsVisible="False" Padding="20" BackgroundColor="MintCream" >
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                            x:Name="ResultLabel"
+                            SemanticProperties.Hint="Displays the name of the audio file"
+                            Text="Result: Not yet computed" 
+                            FontSize="20"
+                            TextColor="SeaGreen"
+                            BackgroundColor="MintCream"
+                            
+                            Padding="10"
+                            class="resultLabel"
+                            HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="CenterAndExpand"
+                            />
+                        
+                        <Button
+                            x:Name="ProcessNewButton"
+                            SemanticProperties.Hint="Processes the audio file"
+                            Text="Add a New Song" 
+                            Clicked="OnUpload"
+                            TextColor="LightCyan"
+                            BackgroundColor="SeaGreen"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center"
+                            />
+                    </StackLayout>   
+                </Border>
                 
-            </VerticalStackLayout>
+                <Border x:Name="InfoBorder"  Grid.Row="5" Grid.Column="4" IsEnabled="False" IsVisible="False" Padding="20" BackgroundColor="MintCream" >
+                    <StackLayout>
+                        <Label
+                            x:Name="Key"
+                            HorizontalOptions="Start"
+                            TextColor="SeaGreen"
+                            FontAttributes="Bold"
+                        />
+                        <Label
+                            x:Name="Scale"
+                            HorizontalOptions="Start"
+                            TextColor="SeaGreen"
+                        />
+                        <Label
+                            x:Name="Chords"
+                            HorizontalOptions="Start"
+                            TextColor="SeaGreen"
+                        />
+                    </StackLayout>   
+                </Border>
+            </Grid>
         </ScrollView>
     </ContentView>
 </ContentPage>

@@ -9,6 +9,19 @@ public partial class FileUploadPage
 	{
 		InitializeComponent();
 	}
+
+	private static string GetFileName(string filename)
+	{
+		int index = filename.LastIndexOf('/');
+		if (index > 0) 
+		{
+			return filename.Substring(index + 1);
+		}
+		else
+		{
+			return filename;
+		}
+	}
 	
 	private string? _filePath;
 	// TODO: Further restrict file types
@@ -24,7 +37,12 @@ public partial class FileUploadPage
 		
 		_filePath = file;
 		ProcessButton.IsEnabled = true;
-		UploadButton.Text = "Chosen file: " + file;
+		ProcessButton.IsVisible = true;
+		
+		UploadButton.Text = "Upload another file";
+		UploadButton.FontSize = 36;
+		
+		ResultLabel.Text = GetFileName(file);
 	}
 
 	private void ProcessAudio(object sender, EventArgs e)
@@ -36,6 +54,19 @@ public partial class FileUploadPage
 		// TODO: Display the chords in a more user-friendly way
 		ResultLabel.Text = $"{analysis.Key()}\n" +
 		                   $"Chords: {string.Join("\n", analysis.Chords().Select(chord => chord.ToString()))}\n";
+
+		// Update all Xaml objects on the page
+		DescriptionLabel.IsVisible = false;
+		UploadButton.IsVisible = false;
+		ResultBorder.IsEnabled = true;
+		ResultBorder.IsVisible = true;
+		InfoBorder.IsEnabled = true;
+		InfoBorder.IsVisible = true;
+		
+		// TODO: Put actual values into these 
+		Key.Text = "Key:    " + "C Major";
+		Scale.Text = "Suggested Scale:    " + "A Minor Pentatonic";
+		Chords.Text = "Chords Found:    " + "C   Dm   F";
 	}
 	
 	private static async Task<string?> CopyPickedToLocal(PickOptions options)
