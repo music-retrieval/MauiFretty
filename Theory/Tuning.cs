@@ -7,18 +7,40 @@ public class Tuning
     //Default to standard tuning
     public Tuning(GuitarString[] strings)
     {
-        Strings = new GuitarString[]
+        if (strings.Length != 6)
         {
-            new GuitarString(new Note("E")),
-            new GuitarString(new Note("A")),
-            new GuitarString(new Note("D")),
-            new GuitarString(new Note("G")),
-            new GuitarString(new Note("B")),
-            new GuitarString(new Note("E"))
-        };
+            throw new ArgumentException("Invalid number of strings.");
+        }
+        
+        Strings = strings;
     }
     
-    
+    public Tuning(string[] strings)
+    {
+        if (strings.Length != 6)
+        {
+            throw new ArgumentException("Invalid number of strings.");
+        }
+        
+        Strings = new GuitarString[]
+        {
+            new GuitarString(new Note(strings[0])),
+            new GuitarString(new Note(strings[1])),
+            new GuitarString(new Note(strings[2])),
+            new GuitarString(new Note(strings[3])),
+            new GuitarString(new Note(strings[4])),
+            new GuitarString(new Note(strings[5]))
+        };
+    }
+
+    public override string? ToString()
+    {
+        // returns the array of Strings.ToString()
+        // TODO, make sure this is returned in the correct order, so that EADGBE is returned as EADGBE
+        return string.Join("", Strings.Select(s => s.ToString()));
+    }
+
+
     //3 overloading methods for changing the tuning of a string
     public void ChangeString(int stringNumber, GuitarString newString)
     {

@@ -5,7 +5,7 @@ public struct Note
     //a list of all potential note values in the musical alphabet
     private readonly string[] _allNotes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 
-    private string _letter;
+    public string Letter { get; }
 
     public Note(string letter)
     {
@@ -13,31 +13,15 @@ public struct Note
         {
             throw new ArgumentException("Invalid note value.");
         }
-        _letter = letter;
+        Letter = letter;
     }
 
-    public string Letter
-    {
-        get => _letter;
-
-        //Notes are done using # notation rather than b notation
-        set
-        {
-            if (Array.IndexOf(_allNotes, value) != -1)
-            {
-                _letter = value;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid note value.");
-            }
-        }
-    }
+    
 
 
     public Note SemitoneUp() 
     {
-        int index = Array.IndexOf(_allNotes, _letter);
+        int index = Array.IndexOf(_allNotes, Letter);
         
         int newIndex = index >= _allNotes.Length - 1 ? 0 : index + 1;
         
@@ -46,7 +30,7 @@ public struct Note
 
     public Note SemitoneDown()
     {
-        int index = Array.IndexOf(_allNotes, _letter);
+        int index = Array.IndexOf(_allNotes, Letter);
         
         int newIndex = index == 0 ? _allNotes.Length - 1 : index - 1;
 

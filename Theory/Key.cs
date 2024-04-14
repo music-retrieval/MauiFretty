@@ -1,5 +1,7 @@
 namespace Fretty.Theory;
 
+//Not urgent
+
 //Do I need this? the scales have the key in their name
 
 public class Key

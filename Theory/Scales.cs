@@ -91,6 +91,11 @@ public static class Scales
         GSharpBlues,
         GSharpIonian
     }
+    
+    public static ScaleName StringToScaleName(string scaleName)
+    {
+        return (ScaleName)Enum.Parse(typeof(ScaleName), scaleName);
+    }
 
 
     // Dictionary of all scales, with the scale name as the key and the scale as the value

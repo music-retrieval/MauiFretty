@@ -2,7 +2,6 @@ namespace Fretty.Theory;
 
 public class GuitarString
 {
-    // Class members go here
     private readonly Note[] _stringNotes;
 
     public GuitarString(Note rootNote)
@@ -14,6 +13,23 @@ public class GuitarString
         {
             _stringNotes[i] = _stringNotes[i - 1].SemitoneUp();
         }
+    }
+    
+    public GuitarString(string rootNote)
+    {
+        _stringNotes = new Note[25];
+        _stringNotes[0] = new Note(rootNote);
+
+        for (int i = 1; i < _stringNotes.Length; i++)
+        {
+            _stringNotes[i] = _stringNotes[i - 1].SemitoneUp();
+        }
+    }
+
+
+    public override string? ToString()
+    {
+        return _stringNotes[0].ToString();
     }
 
     // Returns the note at the given fret
