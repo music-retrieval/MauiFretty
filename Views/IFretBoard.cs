@@ -2,5 +2,7 @@ namespace Fretty.Views;
 
 public interface IFretBoard
 {
-    void DrawChord(IEnumerable<int[]> coordinates);
+    void DrawChord(string note, IEnumerable<int[]> coordinates);
+    
+    void UpdateScalePicker(List<string> scales);
 }
