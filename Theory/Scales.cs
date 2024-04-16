@@ -323,18 +323,34 @@ public static class Scales
     {
         return (ScaleName)Enum.Parse(typeof(ScaleName), scaleName);
     }
+    
+    public static Dictionary<ScaleName, double> FuzzyScalesContainingChords(List<Chords.ChordName> chords)
+    {
+        // Dictionary to store the scales and their fractions
+        Dictionary<ScaleName, double> fuzzyScalesContainingChords = new Dictionary<ScaleName, double>();
 
+        // For each scale, calculate the fraction of chords that are in the scale
+        // done by converting the chords to notes and checking if the notes are in the scale
+        foreach (var scale in AllScales)
+        {
+            double numChordsInScale = chords.Count(chordName => Chords.ToNotes(chordName).All(chordNote => scale.Value.Keys.Any(scaleNote => scaleNote.Letter == chordNote.Letter)));
+            double fraction = (double)numChordsInScale / chords.Count;
+            fuzzyScalesContainingChords.Add(scale.Key, fraction);
+        }
 
-    //TODO, change this to use Chord class? Or maybe just have a function in chord class that returns array of notes
+        // Return the dictionary of scales and their fractions
+        return fuzzyScalesContainingChords;
+    }
+    
     public static List<ScaleName> ScalesContainingChords(List<Chords.ChordName> chords)
     {
         // List of scales that contain all chords
         List<ScaleName> scalesContainingChords = [];
-        
+
         //For each scale, add the scale if all chords are in the scale
         //done by converting the chords to notes and checking if all notes are in the scale (boolean)
         scalesContainingChords.AddRange(from scale in AllScales let allChordsInScale = chords.All(chordName => Chords.ToNotes(chordName).All(chordNote => scale.Value.Keys.Any(scaleNote => scaleNote.Letter == chordNote.Letter))) where allChordsInScale select scale.Key);
-        
+
         // Return the list of scales containing all chords
         return scalesContainingChords;
     }

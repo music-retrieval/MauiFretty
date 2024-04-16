@@ -30,12 +30,12 @@ public partial class FretBoard : IFretBoard
 
     private readonly List<string> _scalesPicker = ["AMajor", "AMinor", "CMajor", "DSharpMajor"]; // placeholder
     
-    public FretBoard()
+    public FretBoard(TheoryManager theoryManager)
     {
         const int numRows = 7;
         const int numCols = 18;
         InitializeComponent();
-        UpdateScalePicker(_scalesPicker);
+        UpdateScalePicker(theoryManager.AvailableScales());
         GenerateGrid(numRows, numCols);
         GenerateFretBoard(numRows, numCols);
         GenerateFretDots([[2, 5, 2, 1], [2, 7, 2, 1], [2, 9, 2, 1], [2, 11, 2, 1], [1, 13, 2, 1], [3, 13, 2, 1], [2, 16, 2, 2]]);

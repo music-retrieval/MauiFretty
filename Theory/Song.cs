@@ -23,5 +23,4 @@ public class Song(string songName, Key songKey, List<ChordName> songChords)
     public void ChangeName(string name){
         songName = name;
     }
-
 }
