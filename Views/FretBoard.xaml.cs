@@ -35,10 +35,10 @@ public partial class FretBoard : IFretBoard
         const int numRows = 7;
         const int numCols = 18;
         InitializeComponent();
+        UpdateScalePicker(_scalesPicker);
         GenerateGrid(numRows, numCols);
         GenerateFretBoard(numRows, numCols);
         GenerateFretDots([[2, 5, 2, 1], [2, 7, 2, 1], [2, 9, 2, 1], [2, 11, 2, 1], [1, 13, 2, 1], [3, 13, 2, 1], [2, 16, 2, 2]]);
-        UpdateScalePicker(_scalesPicker);
     }
 
     public void DrawChord(string note, IEnumerable<int[]> coordinates)
@@ -242,21 +242,20 @@ public partial class FretBoard : IFretBoard
     private void UpdateTuning(string note, int guitarString)
     {
         ClearRow(guitarString);
-        
-        Note rootNote = new() { Letter = note };
-        GuitarString guitarStringObj = new(rootNote);
+        GuitarString guitarStringObj = new(note);
         
         string? scale = ScalePicker.SelectedItem.ToString();
         if (scale is null) return;
-        
-        Scales.ScaleName scaleName = (Scales.ScaleName)Enum.Parse(typeof(Scales.ScaleName), scale); // do this in the backend
 
+        Scales.ScaleName scaleName = Scales.StringToScaleName(scale);
         Dictionary<Note, string> notes = Scales.GetScaleByName(scaleName);
+
         foreach (KeyValuePair<Note, string> n in notes)
         {
             int[] frets = guitarStringObj.FretsOfNote(n.Key);
             IEnumerable<int[]> coordinates = new List<int[]>();
-            coordinates = frets.Aggregate(coordinates, (current, fret) => current.Append([fret + 1, guitarString]));
+            coordinates = frets.Aggregate(coordinates, (current, fret) => 
+                current.Append([fret + 1, guitarString]));
             DrawChord(n.Key.Letter, coordinates);
         }
     }

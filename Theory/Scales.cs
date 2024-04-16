@@ -15,7 +15,7 @@ public static class Scales
         AIonian,
 
         //A# Scales
-        ASharp,
+        ASharpMajor,
         ASharpMinor,
         ASharpPentatonic,
         ASharpBlues,
@@ -112,6 +112,32 @@ public static class Scales
             }
         },
         {
+            ScaleName.ASharpMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("A#"), "1" },
+                { new Note("C"), "2" },
+                { new Note("D"), "3" },
+                { new Note("D#"), "4" },
+                { new Note("F"), "5" },
+                { new Note("G"), "6" },
+                { new Note("A"), "7" }
+            }
+        },
+        {
+            ScaleName.BMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("B"), "1" },
+                { new Note("C#"), "2" },
+                { new Note("D#"), "3" },
+                { new Note("E"), "4" },
+                { new Note("F#"), "5" },
+                { new Note("G#"), "6" },
+                { new Note("A#"), "7" }
+            }
+        },
+        {
             ScaleName.CMajor,
             new Dictionary<Note, string>
             {
@@ -136,6 +162,149 @@ public static class Scales
                 { new Note("G#"), "b6" },
                 { new Note("A#"), "b7" }
             }
+        },
+        {
+            ScaleName.CSharpMajor,
+            new Dictionary<Note, String>
+            {
+                { new Note("C#"), "1" },
+                { new Note("D#"), "2" },
+                { new Note("F"), "3" },
+                { new Note("F#"), "4" },
+                { new Note("G#"), "5" },
+                { new Note("A#"), "6" },
+                { new Note("C"), "7" }
+            }
+        },
+        {
+            ScaleName.DMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("E"), "2" },
+                { new Note("F#"), "3" },
+                { new Note("G"), "4" },
+                { new Note("A"), "5" },
+                { new Note("B"), "6" },
+                { new Note("C#"), "7" }
+            }
+        },
+        {
+            ScaleName.DSharpMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("D#"), "1" },
+                { new Note("F"), "2" },
+                { new Note("G"), "3" },
+                { new Note("G#"), "4" },
+                { new Note("A#"), "5" },
+                { new Note("C"), "6" },
+                { new Note("D"), "7" }
+            }
+        },
+        {
+            ScaleName.EMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("F#"), "2" },
+                { new Note("G#"), "3" },
+                { new Note("A"), "4" },
+                { new Note("B"), "5" },
+                { new Note("C#"), "6" },
+                { new Note("D#"), "7" }
+             }
+        },
+        {
+            ScaleName.FMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("G"), "2" },
+                { new Note("A"), "3" },
+                { new Note("A#"), "4" },
+                { new Note("C"), "5" },
+                { new Note("D"), "6" },
+                { new Note("E"), "7" }
+            }
+        },
+        {
+            ScaleName.FSharpMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("F#"), "1" },
+                { new Note("G#"), "2" },
+                { new Note("A#"), "3" },
+                { new Note("B"), "4" },
+                { new Note("C#"), "5" },
+                { new Note("D#"), "6" },
+                { new Note("F"), "7" }
+            }
+        },
+        {
+            ScaleName.GMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("A"), "2" },
+                { new Note("B"), "3" },
+                { new Note("C"), "4" },
+                { new Note("D"), "5" },
+                { new Note("E"), "6" },
+                { new Note("F#"), "7" }
+            }
+        },
+        {
+            ScaleName.GSharpMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("G#"), "1" },
+                { new Note("A#"), "2" },
+                { new Note("C"), "3" },
+                { new Note("C#"), "4" },
+                { new Note("D#"), "5" },
+                { new Note("F"), "6" },
+                { new Note("G"), "7" }
+            }
+        },
+        {
+            ScaleName.AMinor,
+            new Dictionary<Note, string>
+            {
+                { new Note("A"), "1" },
+                { new Note("B"), "2" },
+                { new Note("C"), "b3" },
+                { new Note("D"), "4" },
+                { new Note("E"), "5" },
+                { new Note("F"), "b6" },
+                { new Note("G"), "b7" }
+            }
+        },
+        {
+            ScaleName.ASharpMinor,
+            new Dictionary<Note, string>
+            {
+                { new Note("A#"), "1" },
+                { new Note("C"), "2" },
+                { new Note("C#"), "b3" },
+                { new Note("D#"), "4" },
+                { new Note("F"), "5" },
+                { new Note("F#"), "b6" },
+                { new Note("G#"), "b7" }
+            }
+        },
+        {
+            ScaleName.BMinor,
+            new Dictionary<Note, string>
+            {
+                { new Note("B"), "1" },
+                { new Note("C#"), "2" },
+                { new Note("D"), "b3" },
+                { new Note("E"), "4" },
+                { new Note("F#"), "5" },
+                { new Note("G"), "b" },
+                { new Note("A"), "b7" }
+            }
         }
         // Add more scales as needed
     };
@@ -150,7 +319,10 @@ public static class Scales
     }
 
 
-
+    public static ScaleName StringToScaleName(string scaleName)
+    {
+        return (ScaleName)Enum.Parse(typeof(ScaleName), scaleName);
+    }
 
 
     //TODO, change this to use Chord class? Or maybe just have a function in chord class that returns array of notes

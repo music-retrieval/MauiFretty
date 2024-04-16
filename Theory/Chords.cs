@@ -125,7 +125,7 @@ public static class Chords
             new Dictionary<Note, string>
             {
                 { new Note("A"), "1" },
-                { new Note("C"), "b3" },
+                { new Note("C"), "m3" },
                 { new Note("E"), "5" }
             }
         },
@@ -238,7 +238,7 @@ public static class Chords
             new Dictionary<Note, string>
             {
                 { new Note("B"), "1" },
-                { new Note("D"), "b3" },
+                { new Note("D"), "m3" },
                 { new Note("F#"), "5" }
             }
         },
@@ -336,6 +336,566 @@ public static class Chords
                 { new Note("A"), "b7" }
             }
         },
+        {
+            ChordName.CMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("E"), "3" },
+                { new Note("G"), "5" }
+            }
+        },
+        {
+            ChordName.CMinor,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("D#"), "m3" },
+                { new Note("G"), "5" }
+            }
+        },
+        {
+            ChordName.C7,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("E"), "3" },
+                { new Note("G"), "5" },
+                { new Note("A#"), "b7" }
+            }
+        },
+        {
+            ChordName.C5,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("G"), "5" }
+            }
+        },
+        {
+            ChordName.CDim,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("D#"), "m3" },
+                { new Note("F#"), "b5" }
+            }
+        },
+        {
+            ChordName.CDim7,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("D#"), "m3" },
+                { new Note("F#"), "b5" },
+                { new Note("A"), "bb7" }
+            }
+        },
+        {
+            ChordName.CAug,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("E"), "3" },
+                { new Note("G#"), "#5" }
+            }
+        },
+        {
+            ChordName.CSus2,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("D"), "2" },
+                { new Note("G"), "5" }
+            }
+        },
+        {
+            ChordName.CSus4,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("F"), "4" },
+                { new Note("G"), "5" }
+            }
+        },
+        {
+            ChordName.CMajor7,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("E"), "3" },
+                { new Note("G"), "5" },
+                { new Note("B"), "7" }
+            }
+        },
+        {
+            ChordName.CMinor7,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("D#"), "m3" },
+                { new Note("G"), "5" },
+                { new Note("A#"), "b7" }
+            }
+        },
+        {
+            ChordName.C7Sus4,
+            new Dictionary<Note, string>
+            {
+                { new Note("C"), "1" },
+                { new Note("F"), "4" },
+                { new Note("G"), "5" },
+                { new Note("A#"), "b7" }
+            }
+        },
+        {
+            ChordName.DMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("F#"), "3" },
+                { new Note("A"), "5" }
+            }
+        },
+        {
+            ChordName.DMinor,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("F"), "m3" },
+                { new Note("A"), "5" }
+            }
+        },
+        {
+            ChordName.D7,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("F#"), "3" },
+                { new Note("A"), "5" },
+                { new Note("C"), "b7" }
+            }
+        },
+        {
+            ChordName.D5,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("A"), "5" }
+            }
+        },
+        {
+            ChordName.DDim,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("F"), "m3" },
+                { new Note("G#"), "b5" }
+            }
+        },
+        {
+            ChordName.DDim7,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("F"), "m3" },
+                { new Note("G#"), "b5" },
+                { new Note("B"), "bb7" }
+            }
+        },
+        {
+            ChordName.DAug,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("F#"), "3" },
+                { new Note("A#"), "#5" }
+            }
+        },
+        {
+            ChordName.DSus2,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("E"), "2" },
+                { new Note("A"), "5" }
+            }
+        },
+        {
+            ChordName.DSus4,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("G"), "4" },
+                { new Note("A"), "5" }
+            }
+        },
+        {
+            ChordName.DMajor7,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("F#"), "3" },
+                { new Note("A"), "5" },
+                { new Note("C#"), "7" }
+            }
+        },
+        {
+            ChordName.DMinor7,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("F"), "m3" },
+                { new Note("A"), "5" },
+                { new Note("C"), "b7" }
+            }
+        },
+        {
+            ChordName.D7Sus4,
+            new Dictionary<Note, string>
+            {
+                { new Note("D"), "1" },
+                { new Note("G"), "4" },
+                { new Note("A"), "5" },
+                { new Note("C"), "b7" }
+            }
+        },
+        {
+            ChordName.EMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("G#"), "3" },
+                { new Note("B"), "5" }
+            }
+        },
+        {
+            ChordName.EMinor,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("G"), "m3" },
+                { new Note("B"), "5" }
+            }
+        },
+        {
+            ChordName.E7,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("G#"), "3" },
+                { new Note("B"), "5" },
+                { new Note("D"), "b7" }
+            }
+        },
+        {
+            ChordName.E5,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("B"), "5" }
+            }
+        },
+        {
+            ChordName.EDim,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("G"), "m3" },
+                { new Note("A#"), "b5" }
+            }
+        },
+        {
+            ChordName.EDim7,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("G"), "m3" },
+                { new Note("A#"), "b5" },
+                { new Note("C#"), "bb7" }
+            }
+        },
+        {
+            ChordName.EAug,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("G#"), "3" },
+                { new Note("C"), "#5" }
+            }
+        },
+        {
+            ChordName.ESus2,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("F#"), "2" },
+                { new Note("B"), "5" }
+            }
+        },
+        {
+            ChordName.ESus4,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("A"), "4" },
+                { new Note("B"), "5" }
+            }
+        },
+        {
+            ChordName.EMajor7,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("G#"), "3" },
+                { new Note("B"), "5" },
+                { new Note("D#"), "7" }
+            }
+        },
+        {
+            ChordName.EMinor7,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("G"), "m3" },
+                { new Note("B"), "5" },
+                { new Note("D"), "b7" }
+            }
+        },
+        {
+            ChordName.E7Sus4,
+            new Dictionary<Note, string>
+            {
+                { new Note("E"), "1" },
+                { new Note("A"), "4" },
+                { new Note("B"), "5" },
+                { new Note("D"), "b7" }
+            }
+        },
+        {
+            ChordName.FMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("A"), "3" },
+                { new Note("C"), "5" }
+            }
+        },
+        {
+            ChordName.FMinor,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("G#"), "m3" },
+                { new Note("C"), "5" }
+            }
+        },
+        {
+            ChordName.F7,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("A"), "3" },
+                { new Note("C"), "5" },
+                { new Note("D#"), "b7" }
+            }
+        },
+        {
+            ChordName.F5,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("C"), "5" }
+            }
+        },
+        {
+            ChordName.FDim,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("G#"), "m3" },
+                { new Note("B"), "b5" }
+            }
+        },
+        {
+            ChordName.FDim7,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("G#"), "m3" },
+                { new Note("B"), "b5" },
+                { new Note("D"), "bb7" }
+            }
+        },
+        {
+            ChordName.FAug,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("A"), "3" },
+                { new Note("D"), "#5" }
+            }
+        },
+        {
+            ChordName.FSus2,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("G"), "2" },
+                { new Note("C"), "5" }
+            }
+        },
+        {
+            ChordName.FSus4,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("Bb"), "4" },
+                { new Note("C"), "5" }
+            }
+        },
+        {
+            ChordName.FMajor7,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("A"), "3" },
+                { new Note("C"), "5" },
+                { new Note("E"), "7" }
+            }
+        },
+        {
+            ChordName.FMinor7,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("G#"), "m3" },
+                { new Note("C"), "5" },
+                { new Note("D#"), "b7" }
+            }
+        },
+        {
+            ChordName.F7Sus4,
+            new Dictionary<Note, string>
+            {
+                { new Note("F"), "1" },
+                { new Note("Bb"), "4" },
+                { new Note("C"), "5" },
+                { new Note("D#"), "b7" }
+            }
+        },
+        {
+            ChordName.GMajor,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("B"), "3" },
+                { new Note("D"), "5" }
+            }
+        },
+        {
+            ChordName.GMinor,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("A#"), "m3" },
+                { new Note("D"), "5" }
+            }
+        },
+        {
+            ChordName.G7,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("B"), "3" },
+                { new Note("D"), "5" },
+                { new Note("F"), "b7" }
+            }
+        },
+        {
+            ChordName.G5,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("D"), "5" }
+            }
+        },
+        {
+            ChordName.GDim,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("A#"), "m3" },
+                { new Note("C#"), "b5" }
+            }
+        },
+        {
+            ChordName.GDim7,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("A#"), "m3" },
+                { new Note("C#"), "b5" },
+                { new Note("E"), "bb7" }
+            }
+        },
+        {
+            ChordName.GAug,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("B"), "3" },
+                { new Note("D#"), "#5" }
+            }
+        },
+        {
+            ChordName.GSus2,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("A"), "2" },
+                { new Note("D"), "5" }
+            }
+        },
+        {
+            ChordName.GSus4,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("C"), "4" },
+                { new Note("D"), "5" }
+            }
+        },
+        {
+            ChordName.GMajor7,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("B"), "3" },
+                { new Note("D"), "5" },
+                { new Note("F#"), "7" }
+            }
+        },
+        {
+            ChordName.GMinor7,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("A#"), "m3" },
+                { new Note("D"), "5" },
+                { new Note("F"), "b7" }
+            }
+        },
+        {
+            ChordName.G7Sus4,
+            new Dictionary<Note, string>
+            {
+                { new Note("G"), "1" },
+                { new Note("C"), "4" },
+                { new Note("D"), "5" },
+                { new Note("F"), "b7" }
+            }
+        }
 
         // Add more chords and their intervals using https://www.scales-chords.com/chord/guitar/B7sus4
     };
@@ -368,4 +928,11 @@ public static class Chords
         return AllChords[name].Keys.ToArray();
     }
 
+    public static List<ChordName> ChordsInScale(Scales.ScaleName scale)
+    {
+        List<ChordName> chordsInScale = [];
+        chordsInScale.AddRange(from chord in AllChords let chordNotes = chord.Value.Keys let allNotesInScale = chordNotes.All(chordNote => Scales.GetScaleByName(scale).ContainsKey(chordNote)) where allNotesInScale select chord.Key);
+
+        return chordsInScale;
+    }
 }
