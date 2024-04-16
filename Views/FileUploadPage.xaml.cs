@@ -3,7 +3,7 @@ using Fretty.Shared;
 
 namespace Fretty.Views;
 
-public partial class FileUploadPage: ContentPage
+public partial class FileUploadPage
 {
 	public FileUploadPage()
 	{
@@ -29,11 +29,13 @@ public partial class FileUploadPage: ContentPage
 
 	private void ProcessAudio(object sender, EventArgs e)
 	{
-		IAudioAnalysis analysis = _filePath != null ? _essentia.Process(_filePath) : FrettysAnalysis.Empty;
+		if (_filePath == null) return;
+
+		IAudioAnalysis analysis = _essentia.Process(_filePath);
 		
 		// TODO: Display the chords in a more user-friendly way
-		string chords = string.Join(" -> ", analysis.Chords());
-		ResultLabel.Text = chords;
+		ResultLabel.Text = $"{analysis.Key()}\n" +
+		                   $"Chords: {string.Join("\n", analysis.Chords().Select(chord => chord.ToString()))}\n";
 	}
 	
 	private static async Task<string?> CopyPickedToLocal(PickOptions options)

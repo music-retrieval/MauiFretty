@@ -7,7 +7,7 @@ namespace Fretty.Processing;
 // Represents a connection to our FrettysEssentia server
 public class FrettysEssentia(string address, int port) : IServer
 {
-    public FrettysEssentia() : this("127.0.0.1", 27015) {}
+    public FrettysEssentia() : this("44.223.139.104", 80) {}
 
     private TcpClient  Client => new(address, port);
     
@@ -38,9 +38,16 @@ public class FrettysEssentia(string address, int port) : IServer
             // Signal the server that the file has been sent
             client.Client.Shutdown(SocketShutdown.Send);
             
+            StringBuilder responseBuilder = new();
             byte[] responseBuffer = new byte[1024];
-            int responseBytesRead = stream.Read(responseBuffer, 0, responseBuffer.Length);
-            response = Encoding.UTF8.GetString(responseBuffer, 0, responseBytesRead);
+            int responseBytesRead;
+            
+            while ((responseBytesRead = stream.Read(responseBuffer, 0, responseBuffer.Length)) > 0)
+            {
+                responseBuilder.Append(Encoding.UTF8.GetString(responseBuffer, 0, responseBytesRead));
+            }
+            
+            response = responseBuilder.ToString();
         }
         catch (Exception e)
         {
