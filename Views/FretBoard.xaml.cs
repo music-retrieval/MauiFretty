@@ -41,35 +41,28 @@ public partial class FretBoard : IFretBoard
         GenerateFretDots([[2, 5, 2, 1], [2, 7, 2, 1], [2, 9, 2, 1], [2, 11, 2, 1], [1, 13, 2, 1], [3, 13, 2, 1], [2, 16, 2, 2]]);
     }
 
-    public void DrawChord(string note, IEnumerable<int[]> coordinates)
-    {
-        foreach (int[] coordinate in coordinates)
-        {
-            string color = (string)_strings[note][1];
-            if (coordinate[0] <= 16)
-                GenerateNote(note, color, coordinate[0], coordinate[1]);
-        }
-    }
-
+    /* Generation Methods */
     private void GenerateTunings(string note, int row)
     {
         List<string> notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
-
+        
         Picker picker = new()
         {
             Style = (Style)Resources["PickerStyle"],
+            TextColor = Colors.Transparent,
             ItemsSource = notes,
             SelectedItem = note,
             AutomationId = row.ToString(),
+            ZIndex = 0,
         };
 
         Label label = new()
         {
             Text = note,
             FontSize = 14,
-            TextColor = Colors.Black,
             Padding = 12,
             VerticalOptions = LayoutOptions.Center,
+            ZIndex = 0,
         };
         
         picker.SelectedIndexChanged += (sender, args) =>
@@ -86,28 +79,6 @@ public partial class FretBoard : IFretBoard
         Grid.SetRow((BindableObject)picker, row);
         Grid.SetColumn((BindableObject)picker, 0);
         Grid.Children.Add(picker);
-    }
-
-    private void OnTuningChanged(object? sender, EventArgs e)
-    {
-        if (sender == null) return;
-        Picker picker = (Picker)sender;
-
-        string note = (string)picker.SelectedItem;
-        int guitarString = int.Parse(picker.AutomationId);
-        UpdateTuning(note, guitarString);
-    }
-
-    private void OnScaleChanged(object? sender, EventArgs e)
-    {
-        if (sender == null) return;
-        Picker picker = (Picker)sender;
-        
-        string scale = (string)picker.SelectedItem;
-        Scales.ScaleName scaleName = Scales.StringToScaleName(scale);
-        List<Chords.ChordName> chords = Chords.ChordsInScale(scaleName);
-        IEnumerable<string> chordStrings = chords.Select(chord => chord.ToString());
-        UpdateChords(chordStrings);
     }
     
     private void GenerateFretDots(IEnumerable<int[]> coordinates)
@@ -137,8 +108,8 @@ public partial class FretBoard : IFretBoard
 
     private void GenerateGrid(int numRows, int numCols)
     {
-        const double rowLength = 50;
-        const double colLength = 58;
+        const double rowLength = 48;
+        const double colLength = 56;
         
         for (int i = 0; i < numRows; i++)
         {
@@ -162,9 +133,12 @@ public partial class FretBoard : IFretBoard
         // create the full-width vertical bars
         for (int i = 0; i < numRows - 1; i++)
         {
-            for (int j = 2; j < numCols - 1; j++)
+            Grid.Add(GenerateBoxView(i, 2, LayoutOptions.Start, null, 2, null, 
+                "#38753F"), 2, i);
+            for (int j = 3; j < numCols - 1; j++)
             {
-                Grid.Add(GenerateBoxView(i, j, LayoutOptions.Start, null, j == 2 ? 2 : 0.5, null, color: j == 2 ? "#38753F" : "#000000"), j, i);
+                Grid.Add(GenerateBoxView(i, j, LayoutOptions.Start, null, 0.5, null),
+                    j, i);
             }
         }
         
@@ -173,7 +147,7 @@ public partial class FretBoard : IFretBoard
         {
             for (int j = 1; j < numCols - 1; j++)
             {
-                Grid.Add(GenerateBoxView(i, j, null, null, null, 0.5 * (i + 1), color: "#000000"), 
+                Grid.Add(GenerateBoxView(i, j, null, null, null, 0.5 * (i + 1)), 
                     j, i);
             }
         }
@@ -189,8 +163,9 @@ public partial class FretBoard : IFretBoard
     }
 
     private BoxView GenerateBoxView(int i, int j, LayoutOptions? horizontal, LayoutOptions? vertical, 
-        double? width, double? height, string color = "#000000")
+        double? width, double? height, string color)
     {
+        // generate a box view with a specified color
         BoxView boxView = new()
         {
             Color = Color.FromArgb(color),
@@ -198,8 +173,25 @@ public partial class FretBoard : IFretBoard
             WidthRequest = width ?? Grid.ColumnDefinitions[j].Width.Value,
             VerticalOptions = vertical ?? LayoutOptions.Center,
             HorizontalOptions = horizontal ?? LayoutOptions.Center,
+            ZIndex = 0,
         };
         
+        return boxView;
+    }
+
+    private BoxView GenerateBoxView(int i, int j, LayoutOptions? horizontal, LayoutOptions? vertical,
+        double? width, double? height)
+    {
+        // generate box view with the default colors
+        BoxView boxView = new()
+        {
+            HeightRequest = height ?? Grid.RowDefinitions[i].Height.Value,
+            WidthRequest = width ?? Grid.ColumnDefinitions[j].Width.Value,
+            VerticalOptions = vertical ?? LayoutOptions.Center,
+            HorizontalOptions = horizontal ?? LayoutOptions.Center,
+            ZIndex = 0,
+        };
+
         return boxView;
     }
 
@@ -218,9 +210,9 @@ public partial class FretBoard : IFretBoard
         Label label = new()
         {
             Text = note,
+            TextColor = Colors.Black,
             FontSize = 14,
             FontAttributes = bolded ? FontAttributes.Bold : FontAttributes.None,
-            TextColor = Colors.Black,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
             ZIndex = 1
@@ -229,10 +221,16 @@ public partial class FretBoard : IFretBoard
         Grid.Add(circle, col, row);
         Grid.Add(label, col, row);
     }
-
-    private void KeyChange(object sender, EventArgs e)
+    
+    /* Note Methods */
+    public void DrawChord(string note, IEnumerable<int[]> coordinates)
     {
-        // TODO: Bold active key and draw the correct notes
+        foreach (int[] coordinate in coordinates)
+        {
+            string color = (string)_strings[note][1];
+            if (coordinate[0] <= 16)
+                GenerateNote(note, color, coordinate[0], coordinate[1]);
+        }
     }
 
     private void ClearRow(int row)
@@ -240,17 +238,14 @@ public partial class FretBoard : IFretBoard
             for (int i = 0; i < Grid.Children.Count; i++)
             {
                 IView child = Grid.Children[i];
-                // ignore the first column and any children not in the row
-                if (Grid.GetRow(child) != row || Grid.GetColumn(child) == 0) continue;
-                
-                // ignore the strings and tunings
-                if (child is BoxView or Picker) continue;
+                if (Grid.GetRow(child) != row || child.ZIndex == 0) continue;
 
                 Grid.Children.RemoveAt(i);
                 i--;
             }
     }
-
+    
+    /* Update Methods */
     private void UpdateTuning(string note, int guitarString)
     {
         ClearRow(guitarString);
@@ -290,10 +285,33 @@ public partial class FretBoard : IFretBoard
             {
                 Text = chord,
                 FontSize = 14,
-                TextColor = Color.FromArgb("#FF38753F"),
+                // TextColor = Color.FromArgb("#FF38753F"),
                 Padding = 10,
             };
             ChordLayout.Add(label);
         }
+    }
+    
+    /* Event Handlers */
+    private void OnTuningChanged(object? sender, EventArgs e)
+    {
+        if (sender == null) return;
+        Picker picker = (Picker)sender;
+
+        string note = (string)picker.SelectedItem;
+        int guitarString = int.Parse(picker.AutomationId);
+        UpdateTuning(note, guitarString);
+    }
+
+    private void OnScaleChanged(object? sender, EventArgs e)
+    {
+        if (sender == null) return;
+        Picker picker = (Picker)sender;
+        
+        string scale = (string)picker.SelectedItem;
+        Scales.ScaleName scaleName = Scales.StringToScaleName(scale);
+        List<Chords.ChordName> chords = Chords.ChordsInScale(scaleName);
+        IEnumerable<string> chordStrings = chords.Select(chord => chord.ToString());
+        UpdateChords(chordStrings);
     }
 }

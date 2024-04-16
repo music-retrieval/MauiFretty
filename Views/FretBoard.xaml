@@ -27,11 +27,12 @@
                 <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
         <Style x:Key="PickerStyle" TargetType="Picker">
-                <Setter Property="BackgroundColor" Value="#38753F"/>
-                <Setter Property="TitleColor" Value="Black"/>
-                <Setter Property="TextColor" Value="Transparent"/>
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="Shadow" Value="False" />
+        </Style>
+        <Style x:Key="GridLineStyle" TargetType="BoxView">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightGreen}, Dark={StaticResource Gray200}}" />
         </Style>
     </ContentPage.Resources>
 
@@ -43,9 +44,7 @@
                        VerticalTextAlignment="Center"
                        FontSize="14"/>
                 <Picker x:Name="ScalePicker"
-                        BackgroundColor="#7738753F"
                         WidthRequest="100"
-                        TextColor="#38753F"
                         SelectedIndexChanged="OnScaleChanged"/>
                 <FlexLayout x:Name="ChordLayout"
                              Direction="Row"
