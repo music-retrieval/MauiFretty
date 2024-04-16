@@ -28,7 +28,7 @@ public partial class FretBoard : IFretBoard
         { "G#", [11, "#FFDD75D1"] },
     };
 
-    private readonly List<string> _scalesPicker = ["AMajor"]; // placeholder
+    private readonly List<string> _scalesPicker = ["AMajor", "AMinor", "CMajor", "DSharpMajor"]; // placeholder
     
     public FretBoard()
     {
@@ -96,6 +96,18 @@ public partial class FretBoard : IFretBoard
         string note = (string)picker.SelectedItem;
         int guitarString = int.Parse(picker.AutomationId);
         UpdateTuning(note, guitarString);
+    }
+
+    private void OnScaleChanged(object? sender, EventArgs e)
+    {
+        if (sender == null) return;
+        Picker picker = (Picker)sender;
+        
+        string scale = (string)picker.SelectedItem;
+        Scales.ScaleName scaleName = Scales.StringToScaleName(scale);
+        List<Chords.ChordName> chords = Chords.ChordsInScale(scaleName);
+        IEnumerable<string> chordStrings = chords.Select(chord => chord.ToString());
+        UpdateChords(chordStrings);
     }
     
     private void GenerateFretDots(IEnumerable<int[]> coordinates)
@@ -264,5 +276,24 @@ public partial class FretBoard : IFretBoard
     {
         ScalePicker.ItemsSource = scales;
         ScalePicker.SelectedIndex = 0;
+    }
+
+    private void UpdateChords(IEnumerable<string> chords)
+    {
+        ChordLayout.Children.Clear();
+        
+        foreach (string chord in chords)
+        {
+            if (!chord.EndsWith("Major") && !chord.EndsWith("Minor")) continue;
+            
+            Label label = new()
+            {
+                Text = chord,
+                FontSize = 14,
+                TextColor = Color.FromArgb("#FF38753F"),
+                Padding = 10,
+            };
+            ChordLayout.Add(label);
+        }
     }
 }

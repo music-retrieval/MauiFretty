@@ -750,7 +750,7 @@ public static class Chords
             new Dictionary<Note, string>
             {
                 { new Note("F"), "1" },
-                { new Note("Bb"), "4" },
+                { new Note("A#"), "4" },
                 { new Note("C"), "5" }
             }
         },
@@ -779,7 +779,7 @@ public static class Chords
             new Dictionary<Note, string>
             {
                 { new Note("F"), "1" },
-                { new Note("Bb"), "4" },
+                { new Note("A#"), "4" },
                 { new Note("C"), "5" },
                 { new Note("D#"), "b7" }
             }
@@ -931,8 +931,12 @@ public static class Chords
     public static List<ChordName> ChordsInScale(Scales.ScaleName scale)
     {
         List<ChordName> chordsInScale = [];
-        chordsInScale.AddRange(from chord in AllChords let chordNotes = chord.Value.Keys let allNotesInScale = chordNotes.All(chordNote => Scales.GetScaleByName(scale).ContainsKey(chordNote)) where allNotesInScale select chord.Key);
-
+        chordsInScale.AddRange(from chord in AllChords 
+            let chordNotes = chord.Value.Keys
+            let allNotesInScale = chordNotes.All(chordNote => Scales.GetScaleByName(scale).ContainsKey(chordNote)) 
+            where allNotesInScale
+            select chord.Key);
+        
         return chordsInScale;
     }
 }
