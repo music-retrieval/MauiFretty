@@ -371,6 +371,4 @@ public partial class FretBoard : IFretBoard
         string chord = button.Text;
         UpdateChord(chord);
     }
-
-
 }
