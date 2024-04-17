@@ -107,6 +107,7 @@ Whether you're a beginner learning chords or an experienced player seeking inspi
                                 HorizontalOptions="EndAndExpand"
                             />
                             
+                            
                         </StackLayout>   
                     </Border>
                 </VerticalStackLayout>
