@@ -49,7 +49,8 @@ public partial class FretBoard : IFretBoard
     
     private readonly TheoryManager _theoryManager;
 
-    public void DrawChord(string note, IEnumerable<int[]> coordinates, string? numberedNote)
+    /* draw all occurrences of the specified note */
+    public void GenerateAllOfNote(string note, IEnumerable<int[]> coordinates, string? numberedNote)
     {
         foreach (int[] coordinate in coordinates)
         {
@@ -59,13 +60,9 @@ public partial class FretBoard : IFretBoard
         }
     }
     
-    public void UpdateScalePicker(List<string> scales)
-    {
-        ScalePicker.ItemsSource = scales;
-        ScalePicker.SelectedIndex = 0;
-    }
 
-    private void GenerateTunings(string note, int row)
+    /* generate the tuning dropdowns for the guitar strings */
+    private void GenerateTuningDropdowns(string note, int row)
     {
         List<string> notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 
@@ -103,40 +100,8 @@ public partial class FretBoard : IFretBoard
         Grid.SetColumn((BindableObject)picker, 0);
         Grid.Children.Add(picker);
     }
-
-    private void OnTuningChanged(object? sender, EventArgs e)
-    {
-        if (sender == null) return;
-        Picker picker = (Picker)sender;
-
-        string note = (string)picker.SelectedItem;
-        int guitarString = int.Parse(picker.AutomationId);
-
-        _stringTunings[guitarString] = note;
-        UpdateTuning(note, guitarString);
-    }
-
-    private void OnToggleNumberedNotes(object? sender, EventArgs e)
-    {
-        _numberedNotes = !_numberedNotes;
-        RegenerateStringTunings();
-    }
-
-    private void OnScaleChanged(object? sender, EventArgs e)
-    {
-        if (sender == null) return;
-        Picker picker = (Picker)sender;
-        
-        string scale = (string)picker.SelectedItem;
-        if (scale is null) return;
-        
-        Scales.ScaleName scaleName = Scales.StringToScaleName(scale);
-        List<Chords.ChordName> chords = Chords.ChordsInScale(scaleName);
-        IEnumerable<string> chordStrings = chords.Select(chord => chord.ToString());
-        UpdateChords(chordStrings);
-        RegenerateStringTunings();
-    }
     
+    /* generate the dots on the fret board */
     private void GenerateFretDots(IEnumerable<int[]> coordinates)
     {
         foreach (int[] coordinate in coordinates)
@@ -162,6 +127,7 @@ public partial class FretBoard : IFretBoard
         }
     }
 
+    /* generate the grid spacing */
     private void GenerateGrid(int numRows, int numCols)
     {
         const double rowLength = 50;
@@ -184,6 +150,7 @@ public partial class FretBoard : IFretBoard
         }
     }
 
+    /* generate the fret lines and initial tuning */
     private void GenerateFretBoard(int numRows, int numCols)
     {
         // create the full-width vertical bars
@@ -211,19 +178,11 @@ public partial class FretBoard : IFretBoard
         {
             // add the string label and note on beginning of fretboard
             string note = _stringTunings[i];
-            GenerateTunings(note, i);
+            GenerateTuningDropdowns(note, i);
         }
     }
 
-    private void RegenerateStringTunings()
-    {
-        for (int i = 0; i < _stringTunings.Count; i++)
-        {
-            string note = _stringTunings[i];
-            UpdateTuning(note, i);
-        }
-    }
-
+    /* generate a box view with the specified properties */
     private BoxView GenerateBoxView(int i, int j, LayoutOptions? horizontal, LayoutOptions? vertical, 
         double? width, double? height, string color = "#000000")
     {
@@ -240,6 +199,7 @@ public partial class FretBoard : IFretBoard
         return boxView;
     }
 
+    /* draw a note at the specified coordinates */
     private void GenerateNote(string note, string color, int col, int row, bool bolded = true)
     {
         Ellipse circle = new()
@@ -267,22 +227,34 @@ public partial class FretBoard : IFretBoard
         Grid.Add(label, col, row);
     }
 
-    private void ClearRow(int row)
+    /* regenerate all the string tunings */
+    private void RegenerateStringTunings()
+    {
+        for (int i = 0; i < _stringTunings.Count; i++)
+        {
+            string note = _stringTunings[i];
+            UpdateTuning(note, i);
+        }
+    }
+
+    /* clear the notes from the specified guitar string */
+    private void ClearNotes(int guitarString)
     {
             for (int i = 0; i < Grid.Children.Count; i++)
             {
                 IView child = Grid.Children[i];
                 // ignore the first column and any children not in the row
-                if (Grid.GetRow(child) != row || child.ZIndex == 0) continue;
+                if (Grid.GetRow(child) != guitarString || child.ZIndex == 0) continue;
 
                 Grid.Children.RemoveAt(i);
                 i--;
             }
     }
 
+    /* update the tuning for the specified guitar string */
     private void UpdateTuning(string note, int guitarString)
     {
-        ClearRow(guitarString);
+        ClearNotes(guitarString);
         GuitarString guitarStringObj = new(note);
         
         string? scale = ScalePicker.SelectedItem.ToString();
@@ -290,18 +262,36 @@ public partial class FretBoard : IFretBoard
 
         Scales.ScaleName scaleName = Scales.StringToScaleName(scale);
         Dictionary<Note, string> notes = Scales.GetScaleByName(scaleName);
-
-        foreach (KeyValuePair<Note, string> n in notes)
-        {
-            int[] frets = guitarStringObj.FretsOfNote(n.Key);
-            IEnumerable<int[]> coordinates = new List<int[]>();
-            coordinates = frets.Aggregate(coordinates, (current, fret) => 
-                current.Append([fret + 1, guitarString]));
-            DrawChord(n.Key.Letter, coordinates, _numberedNotes ? n.Value : null);
-        }
+        
+        ParseNotes(notes, guitarString, guitarStringObj);
     }
 
-    private void UpdateChords(IEnumerable<string> chords)
+    /* fill the scale picker */
+    public void UpdateScalePicker(List<string> scales)
+    {
+        ScalePicker.ItemsSource = scales;
+        ScalePicker.SelectedIndex = 0;
+    }
+    
+    /* loop through the guitar strings and update to new chord */
+    private void UpdateChord(string chord)
+    {
+        Chords.ChordName chordName = Chords.StringToChordName(chord);
+        Dictionary<Note, string> notes = Chords.GetChordNotes(chordName);
+        
+        for (int i = 0; i < _stringTunings.Count; i++)
+        {
+            ClearNotes(i);
+            
+            string note = _stringTunings[i];
+            GuitarString guitarStringObj = new(note);
+
+            ParseNotes(notes, i, guitarStringObj);
+        }
+    }
+    
+    /* update the chord list for the selected scale */
+    private void UpdateChordList(IEnumerable<string> chords)
     {
         ChordLayout.Children.Clear();
         
@@ -309,14 +299,78 @@ public partial class FretBoard : IFretBoard
         {
             if (!chord.EndsWith("Major") && !chord.EndsWith("Minor")) continue;
             
-            Label label = new()
+            Button button = new()
             {
                 Text = chord,
+                BackgroundColor = Colors.Transparent,
                 FontSize = 14,
                 TextColor = Color.FromArgb("#FF38753F"),
                 Padding = 10,
             };
-            ChordLayout.Add(label);
+
+            button.Clicked += OnChordSelected;
+            ChordLayout.Add(button);
         }
     }
+
+    /* parse the notes and draw them on the specified guitar string */
+    private void ParseNotes(Dictionary<Note, string> notes, int guitarString, GuitarString guitarStringObj)
+    {
+        foreach (KeyValuePair<Note, string> n in notes)
+        {
+            int[] frets = guitarStringObj.FretsOfNote(n.Key);
+            IEnumerable<int[]> coordinates = new List<int[]>();
+            coordinates = frets.Aggregate(coordinates, (current, fret) => 
+                current.Append([fret + 1, guitarString]));
+            GenerateAllOfNote(n.Key.Letter, coordinates, _numberedNotes ? n.Value : null);
+        }   
+    }
+    
+    /* callback for updated tuning */
+    private void OnTuningChanged(object? sender, EventArgs e)
+    {
+        if (sender == null) return;
+        Picker picker = (Picker)sender;
+
+        string note = (string)picker.SelectedItem;
+        int guitarString = int.Parse(picker.AutomationId);
+
+        _stringTunings[guitarString] = note;
+        UpdateTuning(note, guitarString);
+    }
+
+    /* callback for toggling number/letter notes */
+    private void OnToggleNumberedNotes(object? sender, EventArgs e)
+    {
+        _numberedNotes = !_numberedNotes;
+        RegenerateStringTunings();
+    }
+
+    /* callback for updated scale */
+    private void OnScaleChanged(object? sender, EventArgs e)
+    {
+        if (sender == null) return;
+        Picker picker = (Picker)sender;
+        
+        string scale = (string)picker.SelectedItem;
+        if (scale is null) return;
+        
+        Scales.ScaleName scaleName = Scales.StringToScaleName(scale);
+        List<Chords.ChordName> chords = Chords.ChordsInScale(scaleName);
+        IEnumerable<string> chordStrings = chords.Select(chord => chord.ToString());
+        UpdateChordList(chordStrings);
+        RegenerateStringTunings();
+    }
+    
+    /* callback for updated chord */
+    private void OnChordSelected(object? sender, EventArgs e)
+    {
+        if (sender == null) return;
+        Button button = (Button)sender;
+        
+        string chord = button.Text;
+        UpdateChord(chord);
+    }
+
+
 }

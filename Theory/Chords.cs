@@ -113,6 +113,11 @@ public static class Chords
     private static readonly Dictionary<ChordName, Dictionary<Note, string>> AllChords = new Dictionary<ChordName, Dictionary<Note, string>>
     {
         {
+            ChordName.Invalid,
+            new Dictionary<Note, string>
+            { }
+        },
+        {
             ChordName.AMajor,
             new Dictionary<Note, string>
             {
@@ -900,6 +905,14 @@ public static class Chords
 
         // Add more chords and their intervals using https://www.scales-chords.com/chord/guitar/B7sus4
     };
+    
+    public static ChordName StringToChordName(string chordName)
+    {
+        ChordName chord;
+        bool success = Enum.TryParse(chordName, out chord);
+        
+        return success ? chord : ChordName.Invalid;
+    }
 
     public static Dictionary<Note, string> GetChordNotes(ChordName name)
     {
