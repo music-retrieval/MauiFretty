@@ -26,11 +26,11 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 
-                <Image
-                    Source="dotnet_bot.png"
-                    HeightRequest="185"
+                <Image Grid.Row="0" Grid.Column="0"
+                    Source="fretty_logo.png"
+                    HeightRequest="200"
                     Aspect="AspectFit"
-                    SemanticProperties.Description="dot net bot in a race car number eight" />
+                    SemanticProperties.Description="Fretty's Logo!" />
                 
                 <VerticalStackLayout Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" >
                     
@@ -65,14 +65,21 @@ Whether you're a beginner learning chords or an experienced player seeking inspi
                         Padding="10"
                         />
                     
-                    <Border x:Name="AnalyzeBorder" IsEnabled="False" IsVisible="False" Padding="24" BackgroundColor="White">
+                    <Frame x:Name="AnalyzeBorder" IsEnabled="False" IsVisible="False" Padding="24" BackgroundColor="White" CornerRadius="5">
                         <StackLayout Orientation="Horizontal" Spacing="24" HorizontalOptions="FillAndExpand">
-                            <!-- Add immage tmrw -->
+                            
+                            <Image 
+                                   Source="music_note.png"
+                                   HeightRequest="60"
+                                   Aspect="AspectFit"
+                                   SemanticProperties.Description="A music note" />
+                            
                             <Label
                                 x:Name="ResultLabel"
                                 SemanticProperties.Hint="Displays the name of the audio file"
                                 class="resultLabel"
                                 Text="Result: Not yet computed" 
+                                
                                 FontSize="20"
                                 FontAttributes="Bold"
                                 TextColor="#38753F"
@@ -90,7 +97,7 @@ Whether you're a beginner learning chords or an experienced player seeking inspi
                                 FontSize="18"
                                 FontAttributes="Bold"
                                 VerticalOptions="Center"
-                                HorizontalOptions="Center"
+                                HorizontalOptions="EndAndExpand"
                             />
                             
                             <Button
@@ -107,12 +114,12 @@ Whether you're a beginner learning chords or an experienced player seeking inspi
                             />
                             
                         </StackLayout>   
-                    </Border>
+                    </Frame>
                 </VerticalStackLayout>
                 
                 <VerticalStackLayout Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2">
                     
-                    <Border x:Name="InfoBorder" IsEnabled="False" IsVisible="False" Padding="20" BackgroundColor="White" >
+                    <Frame x:Name="InfoBorder" IsEnabled="False" IsVisible="False" Padding="20" BackgroundColor="White" CornerRadius="5">
                         <StackLayout>
                             <Label
                                 x:Name="Key"
@@ -134,7 +141,7 @@ Whether you're a beginner learning chords or an experienced player seeking inspi
                                 FontSize="24"
                             />
                         </StackLayout>   
-                    </Border>
+                    </Frame>
                 </VerticalStackLayout>
             </Grid>
         </ScrollView>

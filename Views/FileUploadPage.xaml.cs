@@ -92,6 +92,9 @@ public partial class FileUploadPage
 		// Update Key.Text with key
 		Key.Text = "Suggested Key: ";
 		Key.Text += $"{analysis.Key().Value}\n";
+		
+		// Update Scale.Text with Scale
+		Scale.Text = "Test Scale"; // Dylan this is where you need to add your scale stuff!!! Let me know if I can assist in any way
 	}
 	
 	private static async Task<string?> CopyPickedToLocal(PickOptions options)
