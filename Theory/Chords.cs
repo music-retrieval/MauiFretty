@@ -5,7 +5,8 @@ public static class Chords
     public enum ChordName
     {
         //No one uses sharp chords on guitar, didn't even know they existed, I read its cuz their fingering is too hard
-
+        Invalid,
+        
         //A Scales
         AMajor,
         AMinor,
@@ -938,6 +939,17 @@ public static class Chords
             select chord.Key);
         
         return chordsInScale;
+    }
+    
+    public static ChordName TryParse(string essentiaChord)
+    {
+        string chordNameString = essentiaChord.EndsWith('m')
+            ? essentiaChord.TrimEnd('m') + "Minor"
+            : essentiaChord + "Major";
+
+        return Enum.TryParse(chordNameString, out ChordName chordName)
+            ? chordName
+            : ChordName.Invalid;
     }
     
     public static ChordName EssentiaToChordName(string essentiaChord)

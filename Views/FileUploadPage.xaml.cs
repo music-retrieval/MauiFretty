@@ -1,19 +1,21 @@
 ﻿using Fretty.Processing;
 using Fretty.Shared;
+using Fretty.Theory;
 
 namespace Fretty.Views;
 
 public partial class FileUploadPage
 {
-	public FileUploadPage()
+	public FileUploadPage(TheoryManager theoryManager)
 	{
 		InitializeComponent();
+		_essentia = new Essentia(new FrettysEssentia(), theoryManager);
 	}
 	
 	private string? _filePath;
 	// TODO: Further restrict file types
 	private readonly PickOptions _pickOptions = new();
-	private readonly Essentia _essentia = new(new FrettysEssentia());
+	private readonly Essentia _essentia;
 
 	private async void OnUpload(object sender, EventArgs e)
 	{
