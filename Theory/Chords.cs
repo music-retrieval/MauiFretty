@@ -939,4 +939,48 @@ public static class Chords
         
         return chordsInScale;
     }
+    
+    public static ChordName EssentiaToChordName(string essentiaChord)
+    {
+        // Convert the essentiaChord string to the format of the ChordName enum values
+        string chordNameString;
+        if (essentiaChord.EndsWith("m"))
+        {
+            chordNameString = essentiaChord.TrimEnd('m') + "Minor";
+        }
+        else
+        {
+            chordNameString = essentiaChord + "Major";
+        }
+
+        // Parse the chordNameString to a ChordName enum value
+        return (ChordName)Enum.Parse(typeof(ChordName), chordNameString);
+    }
+
+    public static List<ChordName> EssentiaToChordNames(List<string> essentiaChords)
+    {
+        List<ChordName> chordNames = [];
+
+        foreach (string essentiaChord in essentiaChords)
+        {
+            string chordNameString;
+            if (essentiaChord.EndsWith('m'))
+            {
+                chordNameString = essentiaChord.TrimEnd('m') + "Minor";
+            }
+            else
+            {
+                chordNameString = essentiaChord + "Major";
+            }
+
+            if (Enum.TryParse(chordNameString, out ChordName chordName))
+            {
+                chordNames.Add(chordName);
+            }
+        }
+
+        return chordNames;
+    }
+
+
 }

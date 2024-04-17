@@ -32,6 +32,7 @@
                 <Setter Property="TextColor" Value="Transparent"/>
                 <Setter Property="Opacity" Value="0.5"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="FontAutoScalingEnabled" Value="True"/>
         </Style>
     </ContentPage.Resources>
 
@@ -44,7 +45,6 @@
                        FontSize="14"/>
                 <Picker x:Name="ScalePicker"
                         BackgroundColor="#7738753F"
-                        WidthRequest="100"
                         TextColor="#38753F"
                         SelectedIndexChanged="OnScaleChanged"/>
                 <FlexLayout x:Name="ChordLayout"
@@ -56,7 +56,11 @@
             <Image Source="music_note.png"
                    HeightRequest="40"
                    Margin="50, 0, 0, 0"
-                   HorizontalOptions="Start"/>
+                   HorizontalOptions="Start">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnToggleNumberedNotes" />
+                </Image.GestureRecognizers>
+            </Image>
             <Grid x:Name="Grid"
                   BackgroundColor="Transparent">
             </Grid>

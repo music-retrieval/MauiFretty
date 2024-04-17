@@ -10,86 +10,86 @@ public static class Scales
         //A Scales
         AMajor,
         AMinor,
-        APentatonic,
-        ABlues,
-        AIonian,
+        // APentatonic,
+        // ABlues,
+        // AIonian,
 
         //A# Scales
         ASharpMajor,
         ASharpMinor,
-        ASharpPentatonic,
-        ASharpBlues,
-        ASharpIonian,
+        // ASharpPentatonic,
+        // ASharpBlues,
+        // ASharpIonian,
 
         //B Scales
         BMajor,
         BMinor,
-        BPentatonic,
-        BBlues,
-        BIonian,
+        // BPentatonic,
+        // BBlues,
+        // BIonian,
 
         //C Scales
         CMajor,
         CMinor,
-        CPentatonic,
-        CBlues,
-        CIonian,
+        // CPentatonic,
+        // CBlues,
+        // CIonian,
 
         //C# Scales
         CSharpMajor,
-        CSharpMinor,
-        CSharpPentatonic,
-        CSharpBlues,
-        CSharpIonian,
+        // CSharpMinor,
+        // CSharpPentatonic,
+        // CSharpBlues,
+        // CSharpIonian,
 
         //D Scales
         DMajor,
-        DMinor,
-        DPentatonic,
-        DBlues,
-        DIonian,
+        // DMinor,
+        // DPentatonic,
+        // DBlues,
+        // DIonian,
 
         //D# Scales
         DSharpMajor,
-        DSharpMinor,
-        DSharpPentatonic,
-        DSharpBlues,
-        DSharpIonian,
+        // DSharpMinor,
+        // DSharpPentatonic,
+        // DSharpBlues,
+        // DSharpIonian,
 
         //E Scales
         EMajor,
-        EMinor,
-        EPentatonic,
-        EBlues,
-        EIonian,
+        // EMinor,
+        // EPentatonic,
+        // EBlues,
+        // EIonian,
 
         //F Scales
         FMajor,
-        FMinor,
-        FPentatonic,
-        FBlues,
-        FIonian,
+        // FMinor,
+        // FPentatonic,
+        // FBlues,
+        // FIonian,
 
         //F# Scales
         FSharpMajor,
-        FSharpMinor,
-        FSharpPentatonic,
-        FSharpBlues,
-        FSharpIonian,
+        // FSharpMinor,
+        // FSharpPentatonic,
+        // FSharpBlues,
+        // FSharpIonian,
 
         //G Scales
         GMajor,
-        GMinor,
-        GPentatonic,
-        GBlues,
-        GIonian,
+        // GMinor,
+        // GPentatonic,
+        // GBlues,
+        // GIonian,
 
         //G# Scales
         GSharpMajor,
-        GSharpMinor,
-        GSharpPentatonic,
-        GSharpBlues,
-        GSharpIonian
+        // GSharpMinor,
+        // GSharpPentatonic,
+        // GSharpBlues,
+        // GSharpIonian
     }
 
 
@@ -325,7 +325,6 @@ public static class Scales
     }
 
 
-    //TODO, change this to use Chord class? Or maybe just have a function in chord class that returns array of notes
     public static List<ScaleName> ScalesContainingChords(List<Chords.ChordName> chords)
     {
         // List of scales that contain all chords
@@ -337,6 +336,24 @@ public static class Scales
         
         // Return the list of scales containing all chords
         return scalesContainingChords;
+    }
+    
+    public static Dictionary<ScaleName, double> FuzzyScalesContainingChords(List<Chords.ChordName> chords)
+    {
+        // Dictionary to store the scales and their fractions
+        Dictionary<ScaleName, double> fuzzyScalesContainingChords = new Dictionary<ScaleName, double>();
+
+        // For each scale, calculate the fraction of chords that are in the scale
+        // done by converting the chords to notes and checking if the notes are in the scale
+        foreach (KeyValuePair<ScaleName, Dictionary<Note, string>> scale in AllScales)
+        {
+            double numChordsInScale = chords.Count(chordName => Chords.ToNotes(chordName).All(chordNote => scale.Value.Keys.Any(scaleNote => scaleNote.Letter == chordNote.Letter)));
+            double fraction = (double)numChordsInScale / chords.Count;
+            fuzzyScalesContainingChords.Add(scale.Key, fraction);
+        }
+
+        // Return the dictionary of scales and their fractions
+        return fuzzyScalesContainingChords;
     }
 
 }

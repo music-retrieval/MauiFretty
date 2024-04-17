@@ -10,7 +10,8 @@ using Theory;
 
 public partial class FretBoard : IFretBoard
 {
-    private readonly List<string> _defaultStrings = ["E", "B", "G", "D", "A", "E"];
+    private readonly List<string> _stringTunings = ["E", "B", "G", "D", "A", "E"];
+    private bool _numberedNotes;
     
     private readonly Dictionary<string, object[]> _strings = new()
     {
@@ -35,19 +36,19 @@ public partial class FretBoard : IFretBoard
         const int numRows = 7;
         const int numCols = 18;
         InitializeComponent();
-        UpdateScalePicker(_scalesPicker);
         GenerateGrid(numRows, numCols);
         GenerateFretBoard(numRows, numCols);
         GenerateFretDots([[2, 5, 2, 1], [2, 7, 2, 1], [2, 9, 2, 1], [2, 11, 2, 1], [1, 13, 2, 1], [3, 13, 2, 1], [2, 16, 2, 2]]);
+        UpdateScalePicker(_scalesPicker);
     }
 
-    public void DrawChord(string note, IEnumerable<int[]> coordinates)
+    public void DrawChord(string note, IEnumerable<int[]> coordinates, string? numberedNote)
     {
         foreach (int[] coordinate in coordinates)
         {
             string color = (string)_strings[note][1];
             if (coordinate[0] <= 16)
-                GenerateNote(note, color, coordinate[0], coordinate[1]);
+                GenerateNote(numberedNote ?? note, color, coordinate[0], coordinate[1]);
         }
     }
 
@@ -61,6 +62,7 @@ public partial class FretBoard : IFretBoard
             ItemsSource = notes,
             SelectedItem = note,
             AutomationId = row.ToString(),
+            ZIndex = 0,
         };
 
         Label label = new()
@@ -70,6 +72,7 @@ public partial class FretBoard : IFretBoard
             TextColor = Colors.Black,
             Padding = 12,
             VerticalOptions = LayoutOptions.Center,
+            ZIndex = 0,
         };
         
         picker.SelectedIndexChanged += (sender, args) =>
@@ -95,7 +98,15 @@ public partial class FretBoard : IFretBoard
 
         string note = (string)picker.SelectedItem;
         int guitarString = int.Parse(picker.AutomationId);
+
+        _stringTunings[guitarString] = note;
         UpdateTuning(note, guitarString);
+    }
+
+    private void OnToggleNumberedNotes(object? sender, EventArgs e)
+    {
+        _numberedNotes = !_numberedNotes;
+        RegenerateStringTunings();
     }
 
     private void OnScaleChanged(object? sender, EventArgs e)
@@ -108,6 +119,7 @@ public partial class FretBoard : IFretBoard
         List<Chords.ChordName> chords = Chords.ChordsInScale(scaleName);
         IEnumerable<string> chordStrings = chords.Select(chord => chord.ToString());
         UpdateChords(chordStrings);
+        RegenerateStringTunings();
     }
     
     private void GenerateFretDots(IEnumerable<int[]> coordinates)
@@ -164,27 +176,36 @@ public partial class FretBoard : IFretBoard
         {
             for (int j = 2; j < numCols - 1; j++)
             {
-                Grid.Add(GenerateBoxView(i, j, LayoutOptions.Start, null, j == 2 ? 2 : 0.5, null, color: j == 2 ? "#38753F" : "#000000"), j, i);
+                Grid.Add(
+                    GenerateBoxView(i, j, LayoutOptions.Start, null, j == 2 ? 2 : 0.5, null,
+                        color: j == 2 ? "#38753F" : "#000000"), j, i);
             }
         }
-        
+
         // create the horizontal bars
         for (int i = 0; i < numRows - 1; i++)
         {
             for (int j = 1; j < numCols - 1; j++)
             {
-                Grid.Add(GenerateBoxView(i, j, null, null, null, 0.5 * (i + 1), color: "#000000"), 
+                Grid.Add(GenerateBoxView(i, j, null, null, null, 0.5 * (i + 1), color: "#000000"),
                     j, i);
             }
         }
 
-        
-        for (int i = 0; i < _defaultStrings.Count; i++)
+        for (int i = 0; i < _stringTunings.Count; i++)
         {
             // add the string label and note on beginning of fretboard
-            string note = _defaultStrings[i];
-            UpdateTuning(note, i);
+            string note = _stringTunings[i];
             GenerateTunings(note, i);
+        }
+    }
+
+    private void RegenerateStringTunings()
+    {
+        for (int i = 0; i < _stringTunings.Count; i++)
+        {
+            string note = _stringTunings[i];
+            UpdateTuning(note, i);
         }
     }
 
@@ -198,6 +219,7 @@ public partial class FretBoard : IFretBoard
             WidthRequest = width ?? Grid.ColumnDefinitions[j].Width.Value,
             VerticalOptions = vertical ?? LayoutOptions.Center,
             HorizontalOptions = horizontal ?? LayoutOptions.Center,
+            ZIndex = 0,
         };
         
         return boxView;
@@ -230,21 +252,13 @@ public partial class FretBoard : IFretBoard
         Grid.Add(label, col, row);
     }
 
-    private void KeyChange(object sender, EventArgs e)
-    {
-        // TODO: Bold active key and draw the correct notes
-    }
-
     private void ClearRow(int row)
     {
             for (int i = 0; i < Grid.Children.Count; i++)
             {
                 IView child = Grid.Children[i];
                 // ignore the first column and any children not in the row
-                if (Grid.GetRow(child) != row || Grid.GetColumn(child) == 0) continue;
-                
-                // ignore the strings and tunings
-                if (child is BoxView or Picker) continue;
+                if (Grid.GetRow(child) != row || child.ZIndex == 0) continue;
 
                 Grid.Children.RemoveAt(i);
                 i--;
@@ -268,7 +282,7 @@ public partial class FretBoard : IFretBoard
             IEnumerable<int[]> coordinates = new List<int[]>();
             coordinates = frets.Aggregate(coordinates, (current, fret) => 
                 current.Append([fret + 1, guitarString]));
-            DrawChord(n.Key.Letter, coordinates);
+            DrawChord(n.Key.Letter, coordinates, _numberedNotes ? n.Value : null);
         }
     }
 
