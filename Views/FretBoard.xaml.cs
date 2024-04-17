@@ -128,6 +128,8 @@ public partial class FretBoard : IFretBoard
         Picker picker = (Picker)sender;
         
         string scale = (string)picker.SelectedItem;
+        if (scale is null) return;
+        
         Scales.ScaleName scaleName = Scales.StringToScaleName(scale);
         List<Chords.ChordName> chords = Chords.ChordsInScale(scaleName);
         IEnumerable<string> chordStrings = chords.Select(chord => chord.ToString());
