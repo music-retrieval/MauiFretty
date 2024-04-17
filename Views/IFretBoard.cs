@@ -1,3 +1,5 @@
+using Fretty.Theory;
+
 namespace Fretty.Views;
 
 public interface IFretBoard

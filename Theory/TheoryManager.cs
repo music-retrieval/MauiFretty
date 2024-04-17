@@ -8,11 +8,26 @@ public class TheoryManager
 
     public List<string> AvailableScales()
     {
-        return _analysis?.Key().Scales() ?? new List<string>();
+        List<Scales.ScaleName> scaleNames = Scales.ScalesContainingChords(_analysis?.ChordProgression());
+        List<string> scaleNamesString = scaleNames.Select(s => s.ToString()).ToList();
+        
+        return scaleNamesString;
     }
+    
+    private readonly List<Action<List<string>>> _scaleListeners = [];
     
     public void Inform(IAudioAnalysis audioAnalysis)
     {
         _analysis = audioAnalysis;
+        
+        foreach (Action<List<string>> listener in _scaleListeners)
+        {
+            listener(AvailableScales());
+        }
+    }
+    
+    public void RegisterScaleListener(Action<List<string>> listener)
+    {
+        _scaleListeners.Add(listener);
     }
 }

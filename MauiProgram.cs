@@ -27,7 +27,7 @@ public static class MauiProgram
 	
 	private static MauiAppBuilder RegisterServices(this MauiAppBuilder mauiAppBuilder)
 	{
-		mauiAppBuilder.Services.AddTransient<TheoryManager, TheoryManager>();
+		mauiAppBuilder.Services.AddSingleton<TheoryManager>();
 		// More services registered here.
 
 		return mauiAppBuilder;        
@@ -42,6 +42,7 @@ public static class MauiProgram
 	private static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
 	{
 		mauiAppBuilder.Services.AddSingleton<FretBoard>();
+		mauiAppBuilder.Services.AddSingleton<FileUploadPage>();
 		// More views registered here.
 		
 		return mauiAppBuilder;        

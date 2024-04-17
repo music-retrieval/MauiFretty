@@ -2,35 +2,21 @@ using Fretty.Theory;
 
 namespace Fretty.Shared;
 
-public class ChordMetric: AbstractMetric<Chords.ChordName>
+public class ChordMetric(string value, double strength)
+    : AbstractMetric<Chords.ChordName>(Chords.TryParse(value), strength)
 {
-    public static ChordMetric Invalid = new ChordMetric("C", 0);
-    
-    public ChordMetric(string values, double strength): base(TryParse(values), strength)
-    {
-    }
-    
-    private static Chords.ChordName TryParse(string essentiaChord)
-    {
-        // Convert the essentiaChord string to the format of the ChordName enum values
-        string chordNameString;
-        if (essentiaChord.EndsWith("m"))
-        {
-            chordNameString = essentiaChord.TrimEnd('m') + "Minor";
-        }
-        else
-        {
-            chordNameString = essentiaChord + "Major";
-        }
+    public static ChordMetric Invalid = new("Invalid", 0);
 
-        // Parse the chordNameString to a ChordName enum value
-        return Enum.TryParse<Chords.ChordName>(chordNameString, out Chords.ChordName chordName)
-            ? chordName
-            : Chords.ChordName.Invalid;
-    }
-    
     public override string ToString()
     {
         return $"Chord: {Value} (strength: {Strength})\n";
+    }
+    
+    public bool IsSharpOrFlat()
+    {
+        return Value.ToString().Contains("Sharp")
+               || Value.ToString().Contains("Flat")
+               || Value.ToString().Contains('#')
+               || Value.ToString().Contains('b');
     }
 }

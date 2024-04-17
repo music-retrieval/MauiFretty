@@ -7,97 +7,59 @@ public static class Scales
     // Enum of all scale names
     public enum ScaleName
     {
+        Invalid,
+        
         //A Scales
         AMajor,
         AMinor,
-        APentatonic,
-        ABlues,
-        AIonian,
 
         //A# Scales
         ASharpMajor,
         ASharpMinor,
-        ASharpPentatonic,
-        ASharpBlues,
-        ASharpIonian,
 
         //B Scales
         BMajor,
         BMinor,
-        BPentatonic,
-        BBlues,
-        BIonian,
 
         //C Scales
         CMajor,
         CMinor,
-        CPentatonic,
-        CBlues,
-        CIonian,
 
         //C# Scales
         CSharpMajor,
-        CSharpMinor,
-        CSharpPentatonic,
-        CSharpBlues,
-        CSharpIonian,
 
         //D Scales
         DMajor,
-        DMinor,
-        DPentatonic,
-        DBlues,
-        DIonian,
 
         //D# Scales
         DSharpMajor,
-        DSharpMinor,
-        DSharpPentatonic,
-        DSharpBlues,
-        DSharpIonian,
 
         //E Scales
         EMajor,
-        EMinor,
-        EPentatonic,
-        EBlues,
-        EIonian,
 
         //F Scales
         FMajor,
-        FMinor,
-        FPentatonic,
-        FBlues,
-        FIonian,
 
         //F# Scales
         FSharpMajor,
-        FSharpMinor,
-        FSharpPentatonic,
-        FSharpBlues,
-        FSharpIonian,
 
         //G Scales
         GMajor,
-        GMinor,
-        GPentatonic,
-        GBlues,
-        GIonian,
 
         //G# Scales
         GSharpMajor,
-        GSharpMinor,
-        GSharpPentatonic,
-        GSharpBlues,
-        GSharpIonian
     }
-
 
     // Dictionary of all scales, with the scale name as the key and the scale as the value
     // Where the scale is represented as a dictionary of notes in the scale, with the note as the key and the position in the scale as the value
     // With the root note as 1, the second note as 2, etc.
     private static readonly Dictionary<ScaleName, Dictionary<Note, string>> AllScales = new Dictionary<ScaleName, Dictionary<Note, string>>    
     {
+        {
+            ScaleName.Invalid,
+            new Dictionary<Note, string>
+            { }
+        },
         {
             ScaleName.AMajor,
             new Dictionary<Note, string>
@@ -321,7 +283,10 @@ public static class Scales
 
     public static ScaleName StringToScaleName(string scaleName)
     {
-        return (ScaleName)Enum.Parse(typeof(ScaleName), scaleName);
+        ScaleName scale;
+        bool success = Enum.TryParse(scaleName, out scale);
+        
+        return success ? scale : ScaleName.Invalid;
     }
     
     public static Dictionary<ScaleName, double> FuzzyScalesContainingChords(List<Chords.ChordName> chords)
@@ -342,14 +307,21 @@ public static class Scales
         return fuzzyScalesContainingChords;
     }
     
-    public static List<ScaleName> ScalesContainingChords(List<Chords.ChordName> chords)
+    public static List<ScaleName> ScalesContainingChords(IEnumerable<Chords.ChordName> chords)
     {
         // List of scales that contain all chords
         List<ScaleName> scalesContainingChords = [];
 
         //For each scale, add the scale if all chords are in the scale
         //done by converting the chords to notes and checking if all notes are in the scale (boolean)
-        scalesContainingChords.AddRange(from scale in AllScales let allChordsInScale = chords.All(chordName => Chords.ToNotes(chordName).All(chordNote => scale.Value.Keys.Any(scaleNote => scaleNote.Letter == chordNote.Letter))) where allChordsInScale select scale.Key);
+        scalesContainingChords.AddRange(
+            from scale in AllScales
+            let allChordsInScale = chords.All(
+                chordName => Chords.ToNotes(chordName)
+                    .All(chordNote => scale.Value.Keys.Any(
+                        scaleNote => scaleNote.Letter == chordNote.Letter)))
+            where allChordsInScale
+            select scale.Key);
 
         // Return the list of scales containing all chords
         return scalesContainingChords;

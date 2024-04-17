@@ -10,8 +10,12 @@ using Theory;
 
 public partial class FretBoard : IFretBoard
 {
-    private readonly List<string> _defaultStrings = ["E", "B", "G", "D", "A", "E"];
+    private const int Rows = 7;
+    private const int Columns = 18;
     
+    private static readonly List<string> DefaultStrings = ["E", "B", "G", "D", "A", "E"];
+    private static readonly List<int[]> DefaultFrets =
+        [[2, 5, 2, 1], [2, 7, 2, 1], [2, 9, 2, 1], [2, 11, 2, 1], [1, 13, 2, 1], [3, 13, 2, 1], [2, 16, 2, 2]];
     private readonly Dictionary<string, object[]> _strings = new()
     {
         { "A", [0, "#FF75FEF6"] },
@@ -27,19 +31,20 @@ public partial class FretBoard : IFretBoard
         { "G", [10, "#FFFF97F3"] },
         { "G#", [11, "#FFDD75D1"] },
     };
-
-    private readonly List<string> _scalesPicker = ["AMajor", "AMinor", "CMajor", "DSharpMajor"]; // placeholder
     
     public FretBoard(TheoryManager theoryManager)
     {
-        const int numRows = 7;
-        const int numCols = 18;
+        _theoryManager = theoryManager;
+        _theoryManager.RegisterScaleListener(UpdateScalePicker);
+        
         InitializeComponent();
-        UpdateScalePicker(theoryManager.AvailableScales());
-        GenerateGrid(numRows, numCols);
-        GenerateFretBoard(numRows, numCols);
-        GenerateFretDots([[2, 5, 2, 1], [2, 7, 2, 1], [2, 9, 2, 1], [2, 11, 2, 1], [1, 13, 2, 1], [3, 13, 2, 1], [2, 16, 2, 2]]);
+        UpdateScalePicker(["Some Random Thing"]);
+        GenerateGrid(Rows, Columns);
+        GenerateFretBoard(Rows, Columns);
+        GenerateFretDots(DefaultFrets);
     }
+    
+    private readonly TheoryManager _theoryManager;
 
     public void DrawChord(string note, IEnumerable<int[]> coordinates)
     {
@@ -49,6 +54,12 @@ public partial class FretBoard : IFretBoard
             if (coordinate[0] <= 16)
                 GenerateNote(note, color, coordinate[0], coordinate[1]);
         }
+    }
+    
+    public void UpdateScalePicker(List<string> scales)
+    {
+        ScalePicker.ItemsSource = scales;
+        ScalePicker.SelectedIndex = 0;
     }
 
     private void GenerateTunings(string note, int row)
@@ -179,10 +190,10 @@ public partial class FretBoard : IFretBoard
         }
 
         
-        for (int i = 0; i < _defaultStrings.Count; i++)
+        for (int i = 0; i < DefaultStrings.Count; i++)
         {
             // add the string label and note on beginning of fretboard
-            string note = _defaultStrings[i];
+            string note = DefaultStrings[i];
             UpdateTuning(note, i);
             GenerateTunings(note, i);
         }
@@ -270,12 +281,6 @@ public partial class FretBoard : IFretBoard
                 current.Append([fret + 1, guitarString]));
             DrawChord(n.Key.Letter, coordinates);
         }
-    }
-
-    public void UpdateScalePicker(List<string> scales)
-    {
-        ScalePicker.ItemsSource = scales;
-        ScalePicker.SelectedIndex = 0;
     }
 
     private void UpdateChords(IEnumerable<string> chords)

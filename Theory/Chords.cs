@@ -943,18 +943,10 @@ public static class Chords
     
     public static ChordName TryParse(string essentiaChord)
     {
-        // Convert the essentiaChord string to the format of the ChordName enum values
-        string chordNameString;
-        if (essentiaChord.EndsWith("m"))
-        {
-            chordNameString = essentiaChord.TrimEnd('m') + "Minor";
-        }
-        else
-        {
-            chordNameString = essentiaChord + "Major";
-        }
+        string chordNameString = essentiaChord.EndsWith('m')
+            ? essentiaChord.TrimEnd('m') + "Minor"
+            : essentiaChord + "Major";
 
-        // Parse the chordNameString to a ChordName enum value
         return Enum.TryParse(chordNameString, out ChordName chordName)
             ? chordName
             : ChordName.Invalid;
