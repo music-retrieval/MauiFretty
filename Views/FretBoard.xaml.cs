@@ -130,8 +130,8 @@ public partial class FretBoard : IFretBoard
     /* generate the grid spacing */
     private void GenerateGrid(int numRows, int numCols)
     {
-        const double rowLength = 50;
-        const double colLength = 58;
+        const double rowLength = 44;
+        const double colLength = 52;
         
         for (int i = 0; i < numRows; i++)
         {
