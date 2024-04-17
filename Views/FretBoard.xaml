@@ -30,6 +30,7 @@
                 <Setter Property="BackgroundColor" Value="Transparent"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
                 <Setter Property="Shadow" Value="False" />
+                <Setter Property="FontAutoScalingEnabled" Value="True"/>
         </Style>
         <Style x:Key="GridLineStyle" TargetType="BoxView">
             <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightGreen}, Dark={StaticResource Gray200}}" />
@@ -55,7 +56,11 @@
             <Image Source="music_note.png"
                    HeightRequest="40"
                    Margin="50, 0, 0, 0"
-                   HorizontalOptions="Start"/>
+                   HorizontalOptions="Start">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnToggleNumberedNotes" />
+                </Image.GestureRecognizers>
+            </Image>
             <Grid x:Name="Grid"
                   BackgroundColor="Transparent">
             </Grid>

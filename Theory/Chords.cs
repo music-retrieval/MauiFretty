@@ -5,7 +5,8 @@ public static class Chords
     public enum ChordName
     {
         //No one uses sharp chords on guitar, didn't even know they existed, I read its cuz their fingering is too hard
-
+        Invalid,
+        
         //A Scales
         AMajor,
         AMinor,
@@ -111,6 +112,11 @@ public static class Chords
 
     private static readonly Dictionary<ChordName, Dictionary<Note, string>> AllChords = new Dictionary<ChordName, Dictionary<Note, string>>
     {
+        {
+            ChordName.Invalid,
+            new Dictionary<Note, string>
+            { }
+        },
         {
             ChordName.AMajor,
             new Dictionary<Note, string>
@@ -899,6 +905,14 @@ public static class Chords
 
         // Add more chords and their intervals using https://www.scales-chords.com/chord/guitar/B7sus4
     };
+    
+    public static ChordName StringToChordName(string chordName)
+    {
+        ChordName chord;
+        bool success = Enum.TryParse(chordName, out chord);
+        
+        return success ? chord : ChordName.Invalid;
+    }
 
     public static Dictionary<Note, string> GetChordNotes(ChordName name)
     {
@@ -939,4 +953,59 @@ public static class Chords
         
         return chordsInScale;
     }
+    
+    public static ChordName TryParse(string essentiaChord)
+    {
+        string chordNameString = essentiaChord.EndsWith('m')
+            ? essentiaChord.TrimEnd('m') + "Minor"
+            : essentiaChord + "Major";
+
+        return Enum.TryParse(chordNameString, out ChordName chordName)
+            ? chordName
+            : ChordName.Invalid;
+    }
+    
+    public static ChordName EssentiaToChordName(string essentiaChord)
+    {
+        // Convert the essentiaChord string to the format of the ChordName enum values
+        string chordNameString;
+        if (essentiaChord.EndsWith("m"))
+        {
+            chordNameString = essentiaChord.TrimEnd('m') + "Minor";
+        }
+        else
+        {
+            chordNameString = essentiaChord + "Major";
+        }
+
+        // Parse the chordNameString to a ChordName enum value
+        return (ChordName)Enum.Parse(typeof(ChordName), chordNameString);
+    }
+
+    public static List<ChordName> EssentiaToChordNames(List<string> essentiaChords)
+    {
+        List<ChordName> chordNames = [];
+
+        foreach (string essentiaChord in essentiaChords)
+        {
+            string chordNameString;
+            if (essentiaChord.EndsWith('m'))
+            {
+                chordNameString = essentiaChord.TrimEnd('m') + "Minor";
+            }
+            else
+            {
+                chordNameString = essentiaChord + "Major";
+            }
+
+            if (Enum.TryParse(chordNameString, out ChordName chordName))
+            {
+                chordNames.Add(chordName);
+            }
+        }
+
+        return chordNames;
+    }
+
+
 }
