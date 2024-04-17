@@ -351,7 +351,7 @@ public partial class FretBoard : IFretBoard
     {
         if (sender == null) return;
         Picker picker = (Picker)sender;
-        
+
         string scale = (string)picker.SelectedItem;
         if (scale is null) return;
         
@@ -367,7 +367,21 @@ public partial class FretBoard : IFretBoard
     {
         if (sender == null) return;
         Button button = (Button)sender;
+
+        if (button.FontAttributes == FontAttributes.Bold)
+        {
+            button.FontAttributes = FontAttributes.None;
+            RegenerateStringTunings();
+            return;
+        }
+
+        foreach (IView child in ChordLayout.Children)
+        {
+            if (child is not Button childButton) continue;
+            childButton.FontAttributes = FontAttributes.None;
+        }
         
+        button.FontAttributes = FontAttributes.Bold;
         string chord = button.Text;
         UpdateChord(chord);
     }
