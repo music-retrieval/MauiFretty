@@ -93,6 +93,7 @@ Whether you're a beginner learning chords or an experienced player seeking inspi
                                 HorizontalOptions="Center"
                             />
                             
+                            
                             <Button
                                 x:Name="NewUploadButton"
                                 SemanticProperties.Hint="Processes the audio file"
@@ -109,7 +110,7 @@ Whether you're a beginner learning chords or an experienced player seeking inspi
                         </StackLayout>   
                     </Border>
                 </VerticalStackLayout>
-                 
+                
                 <VerticalStackLayout Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2">
                     
                     <Border x:Name="InfoBorder" IsEnabled="False" IsVisible="False" Padding="20" BackgroundColor="White" >

@@ -56,6 +56,7 @@ public partial class FileUploadPage
 		//ResultLabel.Text = $"{analysis.Key()}\n" +
 		                   //$"Chords: {string.Join("\n", analysis.Chords().Select(chord => chord.ToString()))}\n";
 
+		                   
 		// Update all Xaml objects on the page
 		DescriptionLabel.IsVisible = false;
 		UploadButton.IsVisible = false;
