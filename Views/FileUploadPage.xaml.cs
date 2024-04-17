@@ -55,8 +55,6 @@ public partial class FileUploadPage
 		// TODO: Display the chords in a more user-friendly way
 		//ResultLabel.Text = $"{analysis.Key()}\n" +
 		                   //$"Chords: {string.Join("\n", analysis.Chords().Select(chord => chord.ToString()))}\n";
-
-		                   
 		                   
 		// Update all Xaml objects on the page
 		DescriptionLabel.IsVisible = false;
