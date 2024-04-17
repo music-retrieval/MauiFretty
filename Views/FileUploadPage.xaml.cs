@@ -12,15 +12,8 @@ public partial class FileUploadPage
 
 	private static string GetFileName(string filename)
 	{
-		int index = filename.LastIndexOf('/');
-		if (index > 0) 
-		{
-			return filename.Substring(index + 1);
-		}
-		else
-		{
-			return filename;
-		}
+		int index = filename.LastIndexOf('\\');
+		return index > 0 ? filename[(index + 1)..] : filename;
 	}
 	
 	private string? _filePath;
@@ -34,7 +27,7 @@ public partial class FileUploadPage
 		
 		// Something went wrong
 		if (file == null) return;
-		
+
 		_filePath = file;
 		AnalyzeBorder.IsVisible = true;
 		AnalyzeBorder.IsEnabled = true;
@@ -84,14 +77,14 @@ public partial class FileUploadPage
 			.ToList();
 		
 		// Update Chords.Text with 5 best chords
-		Chords.Text = "Suggested Chords: ";
+		// ChordVales.Text = "Chords Found: ";
 		foreach (var key in sortedChords)
 		{
-			Chords.Text += " " + key;
+			ChordValues.Text += " " + key;
 		}
 		// Update Key.Text with key
-		Key.Text = "Suggested Key: ";
-		Key.Text += $"{analysis.Key().Value}\n";
+		// KeyValues.Text = "Key: ";
+		KeyValues.Text += $" {analysis.Key().Value}\n";
 	}
 	
 	private static async Task<string?> CopyPickedToLocal(PickOptions options)
