@@ -53,7 +53,7 @@
                              MaximumWidthRequest="750">
                 </FlexLayout>
             </StackLayout>
-            <Image Source="music_note.png"
+            <Image Source="fret_note.png"
                    HeightRequest="40"
                    Margin="50, 0, 0, 0"
                    HorizontalOptions="Start">
