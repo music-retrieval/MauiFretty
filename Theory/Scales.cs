@@ -315,7 +315,10 @@ public static class Scales
         // Add more scales as needed
     };
 
-
+    public static List<string> GetScaleNames()
+    {
+        return AllScales.Keys.Where(scale => scale != ScaleName.Invalid).Select(scale => scale.ToString()).ToList();
+    }
 
 
     //Retrieve a scale dictionary by name from outside class, using ScaleName.[name_of_scale]

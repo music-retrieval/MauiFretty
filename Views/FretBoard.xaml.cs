@@ -12,6 +12,7 @@ public partial class FretBoard : IFretBoard
 {
     private readonly List<string> _stringTunings = ["E", "B", "G", "D", "A", "E"];
     private bool _numberedNotes;
+    private readonly List<string> _allScales = Scales.GetScaleNames();
 
     private const int Rows = 7;
     private const int Columns = 18;
@@ -44,7 +45,7 @@ public partial class FretBoard : IFretBoard
         GenerateGrid(Rows, Columns);
         GenerateFretBoard(Rows, Columns);
         GenerateFretDots(DefaultFrets);
-        UpdateScalePicker(["AMajor", "CMajor", "CMinor", "DSharpMajor"]);
+        UpdateScalePicker(_allScales);
     }
     
     private readonly TheoryManager _theoryManager;
