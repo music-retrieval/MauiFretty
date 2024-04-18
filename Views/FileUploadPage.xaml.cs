@@ -1,4 +1,5 @@
-﻿using Fretty.Processing;
+﻿using System.Text;
+using Fretty.Processing;
 using Fretty.Shared;
 
 namespace Fretty.Views;
@@ -13,14 +14,8 @@ public partial class FileUploadPage
 	private static string GetFileName(string filename)
 	{
 		int index = filename.LastIndexOf('/');
-		if (index > 0) 
-		{
-			return filename.Substring(index + 1);
-		}
-		else
-		{
-			return filename;
-		}
+		index = index > 0 ? index : filename.LastIndexOf('\\');
+		return index > 0 ? filename[(index + 1)..] : filename;
 	}
 	
 	private string? _filePath;
@@ -84,17 +79,18 @@ public partial class FileUploadPage
 			.ToList();
 		
 		// Update Chords.Text with 5 best chords
-		Chords.Text = "Suggested Chords: ";
+		// Chords.Text = "Suggested Chords: ";
+		ChordValues.Text = "";
 		foreach (var key in sortedChords)
 		{
-			Chords.Text += " " + key;
+			ChordValues.Text += " " + key;
 		}
 		// Update Key.Text with key
-		Key.Text = "Suggested Key: ";
-		Key.Text += $"{analysis.Key().Value}\n";
+		//Key.Text = "Suggested Key: ";
+		KeyValues.Text = $" {analysis.Key().Value}\n";
 		
 		// Update Scale.Text with Scale
-		Scale.Text = "Test Scale"; // Dylan this is where you need to add your scale stuff!!! Let me know if I can assist in any way
+		ScaleValues.Text = "Test Scale"; // Dylan this is where you need to add your scale stuff!!! Let me know if I can assist in any way
 	}
 	
 	private static async Task<string?> CopyPickedToLocal(PickOptions options)
