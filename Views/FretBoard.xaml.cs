@@ -384,6 +384,28 @@ public partial class FretBoard : IFretBoard
         
         button.FontAttributes = FontAttributes.Bold;
         string chord = button.Text;
-        UpdateChord(chord);
+        if (chord == "CMajor")
+            DrawCMajor();
+        else
+            UpdateChord(chord);
+    }
+    
+    private void DrawCMajor()
+    {
+        List<object[]> notes =
+            [["E", 1, 0], ["C", 2, 1], ["G", 1, 2], ["E", 3, 3], ["C", 4, 4]];
+
+        for (int i = 0; i < 6; i++)
+        {
+            ClearNotes(i);
+        }
+
+        foreach (object[] note in notes)
+        {
+            string color = (string)_strings[(string)note[0]][1];
+            GenerateNote((string)note[0], color, (int)note[1], (int)note[2]);
+        }
+        
+        GenerateNote("X", "#888888", 1, 5);
     }
 }
