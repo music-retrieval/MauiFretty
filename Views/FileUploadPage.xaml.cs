@@ -1,4 +1,5 @@
-﻿using Fretty.Processing;
+﻿using System.Text;
+using Fretty.Processing;
 using Fretty.Shared;
 using Fretty.Theory;
 
@@ -10,6 +11,13 @@ public partial class FileUploadPage
 	{
 		InitializeComponent();
 		_essentia = new Essentia(new FrettysEssentia(), theoryManager);
+	}
+
+	private static string GetFileName(string filename)
+	{
+		int index = filename.LastIndexOf('/');
+		index = index > 0 ? index : filename.LastIndexOf('\\');
+		return index > 0 ? filename[(index + 1)..] : filename;
 	}
 	
 	private string? _filePath;
@@ -25,19 +33,66 @@ public partial class FileUploadPage
 		if (file == null) return;
 		
 		_filePath = file;
-		ProcessButton.IsEnabled = true;
-		UploadButton.Text = "Chosen file: " + file;
+		AnalyzeBorder.IsVisible = true;
+		AnalyzeBorder.IsEnabled = true;
+		DescriptionLabel.IsVisible = false;
+
+		UploadButton.IsVisible = false;
+		
+		ResultLabel.Text = GetFileName(file);
+		
 	}
 
 	private void ProcessAudio(object sender, EventArgs e)
 	{
 		if (_filePath == null) return;
-
+		
 		IAudioAnalysis analysis = _essentia.Process(_filePath);
 		
 		// TODO: Display the chords in a more user-friendly way
-		ResultLabel.Text = $"{analysis.Key()}\n" +
-		                   $"Chords: {string.Join("\n", analysis.Chords().Select(chord => chord.ToString()))}\n";
+		//ResultLabel.Text = $"{analysis.Key()}\n" +
+		                   //$"Chords: {string.Join("\n", analysis.Chords().Select(chord => chord.ToString()))}\n";
+		                   
+		// Update all Xaml objects on the page
+		DescriptionLabel.IsVisible = false;
+		UploadButton.IsVisible = false;
+		InfoBorder.IsEnabled = true;
+		InfoBorder.IsVisible = true;
+		
+		// Add all the chords with a strength > 0.5 to a new list
+		List<string> chords = new List<string> { };
+		for (var i = 0; i < analysis.Chords().Count(); i++)
+		{
+			var strength = analysis.Chords().ElementAt(i).Strength;
+			if (strength > 0.5)
+			{
+				chords.Add(analysis.Chords().ElementAt(i).Value.ToString());
+			}
+		}
+		
+		// Group chords by their count in a dictionary
+		var counts = chords.GroupBy(x => x)
+			.ToDictionary(group => group.Key, group => group.Count());
+		
+		// Sort the dictionary of chords and create a new list containing the 5 most common chords
+		var sortedChords = counts.OrderByDescending(x => x.Value)
+			.Select(x => x.Key)
+			.Take(5)
+			.ToList();
+		
+		// Update Chords.Text with 5 best chords
+		// Chords.Text = "Suggested Chords: ";
+		ChordValues.Text = "";
+		foreach (var key in sortedChords)
+		{
+			ChordValues.Text += " " + key;
+		}
+		// Update Key.Text with key
+		//Key.Text = "Suggested Key: ";
+		KeyValues.Text = $" {analysis.Key().Value}\n";
+		
+		// Update Scale.Text with Scale
+		ScaleValues.Text = Scales.ScalesContainingChords(analysis.ChordProgression())[6].ToString();
 	}
 	
 	private static async Task<string?> CopyPickedToLocal(PickOptions options)
