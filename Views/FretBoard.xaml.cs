@@ -43,7 +43,7 @@ public partial class FretBoard : IFretBoard
         
         InitializeComponent();
         GenerateGrid(Rows, Columns);
-        GenerateFretBoard(Rows, Columns);
+        GenerateFretBoard(Rows - 1, Columns - 1);
         GenerateFretDots(DefaultFrets);
         UpdateScalePicker(_allScales);
     }
@@ -65,7 +65,7 @@ public partial class FretBoard : IFretBoard
     /* generate the tuning dropdowns for the guitar strings */
     private void GenerateTuningDropdowns(string note, int row)
     {
-        List<string> notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
+        List<string> notes = _strings.Keys.ToList();
 
         Picker picker = new()
         {
@@ -92,14 +92,14 @@ public partial class FretBoard : IFretBoard
             label.Text = selectedItem;
             OnTuningChanged(sender, args);
         };
+        //
+        // Grid.SetRow((BindableObject)label, row);
+        // Grid.SetColumn((BindableObject)label, 0);
+        Grid.Add(label, 0, row);
         
-        Grid.SetRow((BindableObject)label, row);
-        Grid.SetColumn((BindableObject)label, 0);
-        Grid.Children.Add(label);
-        
-        Grid.SetRow((BindableObject)picker, row);
-        Grid.SetColumn((BindableObject)picker, 0);
-        Grid.Children.Add(picker);
+        // Grid.SetRow((BindableObject)picker, row);
+        // Grid.SetColumn((BindableObject)picker, 0);
+        Grid.Add(picker, 0, row);
     }
     
     /* generate the dots on the fret board */
@@ -154,37 +154,30 @@ public partial class FretBoard : IFretBoard
     /* generate the fret lines and initial tuning */
     private void GenerateFretBoard(int numRows, int numCols)
     {
-        // create the full-width vertical bars
-        for (int i = 0; i < numRows - 1; i++)
+        for (int i = 0; i < numRows; i++)
         {
-            for (int j = 2; j < numCols - 1; j++)
-            {
-                Grid.Add(
-                    GenerateBoxView(i, j, LayoutOptions.Start, null, j == 2 ? 2 : 0.5, null,
-                        color: j == 2 ? "#38753F" : "#000000"), j, i);
-            }
-        }
-
-        // create the horizontal bars
-        for (int i = 0; i < numRows - 1; i++)
-        {
-            for (int j = 1; j < numCols - 1; j++)
-            {
-                Grid.Add(GenerateBoxView(i, j, null, null, null, 0.5 * (i + 1), color: "#000000"),
-                    j, i);
-            }
-        }
-
-        for (int i = 0; i < _stringTunings.Count; i++)
-        {
-            // add the string label and note on beginning of fretboard
             string note = _stringTunings[i];
             GenerateTuningDropdowns(note, i);
+            
+            for (int j = 1; j < numCols; j++)
+            { 
+                GenerateBoxView(i, j, null, null, null, 0.5 * (i + 1));
+
+                switch (j)
+                {
+                    case 2:
+                        GenerateBoxView(i, 2, LayoutOptions.Start, null, 2, null, "#38753F");
+                        break;
+                    case > 2:
+                        GenerateBoxView(i, j, LayoutOptions.Start, null, 0.5, null);
+                        break;
+                }
+            }
         }
     }
 
     /* generate a box view with the specified properties */
-    private BoxView GenerateBoxView(int i, int j, LayoutOptions? horizontal, LayoutOptions? vertical, 
+    private void GenerateBoxView(int i, int j, LayoutOptions? horizontal, LayoutOptions? vertical, 
         double? width, double? height, string color = "#000000")
     {
         BoxView boxView = new()
@@ -197,7 +190,7 @@ public partial class FretBoard : IFretBoard
             ZIndex = 0,
         };
         
-        return boxView;
+        Grid.Add(boxView, j, i);
     }
 
     /* draw a note at the specified coordinates */
