@@ -19,62 +19,51 @@
                 </Style.Triggers>
             </Style>
             <Style x:Key="EllipseStyle" TargetType="Ellipse">
-                <Setter Property="Fill" Value="#6638753F"/>
+                <Setter Property="Fill" Value="#FFBEDBC1"/>
                 <Setter Property="Stroke" Value="#FF38753F"/>
-                <Setter Property="HeightRequest" Value="30"/>
-                <Setter Property="WidthRequest" Value="30"/>
+                <Setter Property="HeightRequest" Value="35"/>
+                <Setter Property="WidthRequest" Value="35"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
             </Style>
         <Style x:Key="PickerStyle" TargetType="Picker">
                 <Setter Property="BackgroundColor" Value="#38753F"/>
-                <Setter Property="TextColor" Value="White"/>
-                <Setter Property="FontSize" Value="12"/>
-                <Setter Property="FontAutoScalingEnabled" Value="True"/>
+                <Setter Property="TitleColor" Value="Black"/>
+                <Setter Property="TextColor" Value="Transparent"/>
+                <Setter Property="Opacity" Value="0.5"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="FontAutoScalingEnabled" Value="True"/>
         </Style>
     </ContentPage.Resources>
 
-    <StackLayout>
-        <StackLayout Orientation="Horizontal" Margin="70,0,0,0" Spacing="20">
-            <Button x:Name="CMajor"
-                    Text="C Major" 
-                    Clicked="KeyChange"
-                    Style="{StaticResource TextButtonStyle}"/>
-            
-            <Button x:Name="DMajor"
-                    Text="D Major"
-                    ClassId="d_major"
-                    Clicked="KeyChange"
-                    Style="{StaticResource TextButtonStyle}"/>
-            
-            <Button x:Name="EMajor"
-                    Text="E Major"
-                    ClassId="e_major"
-                    Clicked="KeyChange"
-                    Style="{StaticResource TextButtonStyle}"/>
-            
-            <Button x:Name="FMajor"
-                    Text="F Major"
-                    ClassId="f_major"
-                    Clicked="KeyChange"
-                    Style="{StaticResource TextButtonStyle}"/>
-            
-            <Button x:Name="AMajor"
-                    Text="A Major"
-                    ClassId="a_major"
-                    Clicked="KeyChange"
-                    Style="{StaticResource TextButtonStyle}" />
-            
-            <Button x:Name="BMajor"
-                    Text="B Major"
-                    ClassId="b_major"
-                    Clicked="KeyChange"
-                    Style="{StaticResource TextButtonStyle}" />
-
+    <ScrollView Orientation="Both">
+        <StackLayout Orientation="Vertical">
+            <StackLayout Orientation="Horizontal" Margin="10, 0, 10, 0" Spacing="5">
+                <Label Text="Scale:"
+                       TextColor="#38753F"
+                       VerticalTextAlignment="Center"
+                       FontSize="14"/>
+                <Picker x:Name="ScalePicker"
+                        BackgroundColor="#7738753F"
+                        TextColor="#38753F"
+                        SelectedIndexChanged="OnScaleChanged"/>
+                <FlexLayout x:Name="ChordLayout"
+                             Direction="Row"
+                             Wrap="NoWrap"
+                             MaximumWidthRequest="750">
+                </FlexLayout>
+            </StackLayout>
+            <Image Source="fret_note.png"
+                   HeightRequest="40"
+                   Margin="50, 0, 0, 0"
+                   HorizontalOptions="Start">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnToggleNumberedNotes" />
+                </Image.GestureRecognizers>
+            </Image>
+            <Grid x:Name="Grid"
+                  BackgroundColor="Transparent">
+            </Grid>
         </StackLayout>
-        <Grid x:Name="Grid"
-              BackgroundColor="Transparent">
-        </Grid>
-    </StackLayout>
+    </ScrollView>
 </ContentPage>

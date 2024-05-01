@@ -1,6 +1,10 @@
+using Fretty.Theory;
+
 namespace Fretty.Views;
 
 public interface IFretBoard
 {
-    void DrawChord(IEnumerable<int[]> coordinates);
+    void GenerateAllOfNote(string note, IEnumerable<int[]> coordinates, string? numberedNote);
+    
+    void UpdateScalePicker(List<string> scales);
 }
